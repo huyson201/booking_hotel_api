@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../models')
+const { uploadFile, getStreamFile } = require('../s3')
 class SiteController {
     index(req, res) {
         return res.json({ msg: "welcome" })
@@ -23,6 +24,21 @@ class SiteController {
             return res.send(err)
         }
 
+    }
+
+    async uploadFile(req, res) {
+        const file = req.file
+        let result = await uploadFile(file)
+        console.log(result)
+        return res.json({ key: '/images/' + result.key })
+    }
+
+    async getImage(req, res) {
+        let key = req.params.key
+        if (!key) return res.json({ msg: "not found" })
+
+        let streamFile = getStreamFile(key)
+        return streamFile.pipe(res)
     }
 }
 const siteController = new SiteController

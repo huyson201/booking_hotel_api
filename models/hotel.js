@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     hotel_address: DataTypes.STRING,
     hotel_star: DataTypes.INTEGER,
     hotel_phone: DataTypes.STRING,
-    hotel_desc: DataTypes.STRING
+    hotel_desc: DataTypes.STRING,
+    hotel_img: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Hotel',
