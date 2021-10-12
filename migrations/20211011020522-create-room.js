@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      hotel_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       room_name: {
         type: Sequelize.STRING
       },
@@ -19,6 +23,19 @@ module.exports = {
       },
       room_beds: {
         type: Sequelize.INTEGER
+      },
+      room_area: {
+        type: Sequelize.STRING
+      },
+      room_quantity: {
+        type: Sequelize.INTEGER
+      },
+      room_num_people: {
+        type: Sequelize.INTEGER
+      },
+      room_num_ordered: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       room_services: {
         type: Sequelize.STRING

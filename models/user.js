@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcrypt');
 const {
   Model, UUIDV4
 } = require('sequelize');
@@ -23,8 +24,17 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    user_email: DataTypes.STRING,
-    user_password: DataTypes.STRING,
+    user_email: {
+      type: DataTypes.STRING,
+      unique: true
+    },
+    user_password: {
+      type: DataTypes.STRING,
+      set(value) {
+        let hash = bcrypt.hashSync(value, 10)
+        this.setDataValue('user_password', hash)
+      }
+    },
     user_name: DataTypes.STRING,
     user_phone: DataTypes.STRING,
     user_role: DataTypes.INTEGER

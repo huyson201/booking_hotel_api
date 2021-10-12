@@ -5,7 +5,7 @@ const fs = require('fs')
 const awsName = process.env.AWS_BUCKET_NAME
 const awsRegion = process.env.AWS_BUCKET_REGION
 const awsKey = process.env.AWS_BUCKET_ACCESS_KEY
-const awsSecret = process.env.AWS_BUCKET_ACCESS_SECRECT
+const awsSecret = process.env.AWS_BUCKET_ACCESS_SECRET
 const s3 = new S3({
     region: awsRegion,
     accessKeyId: awsKey,

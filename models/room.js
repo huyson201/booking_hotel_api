@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    toJSON() {
+      return { ...this.get() }
+    }
   };
   Room.init({
     room_id: {
@@ -20,10 +23,38 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    room_name: DataTypes.STRING,
+    hotel_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    room_name: {
+      type: DataTypes.STRING
+    },
     room_price: DataTypes.STRING,
     room_desc: DataTypes.STRING,
     room_beds: DataTypes.INTEGER,
+    room_area: {
+      type: DataTypes.STRING
+    },
+    room_quantity: {
+      type: DataTypes.INTEGER
+    },
+    room_num_people: {
+      type: DataTypes.INTEGER
+    },
+    room_num_ordered: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    room_empty: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return this.room_quantity - this.room_num_ordered;
+      },
+      set(value) {
+        throw new Error('Do not try to set the `fullName` value!');
+      }
+    },
     room_services: DataTypes.STRING,
     room_surcharge: DataTypes.STRING
   }, {
