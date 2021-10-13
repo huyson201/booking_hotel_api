@@ -18,13 +18,19 @@ module.exports = {
         type: Sequelize.STRING
       },
       r_date: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       p_date: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       room_id: {
         type: Sequelize.INTEGER
+      },
+      room_quantity: {
+        type: Sequelize.INTEGER
+      },
+      status: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

@@ -33,10 +33,6 @@ module.exports = {
       room_num_people: {
         type: Sequelize.INTEGER
       },
-      room_num_ordered: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
       room_services: {
         type: Sequelize.STRING
       },

@@ -9,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({ Invoice }) {
       // define association here
+      this.hasMany(Invoice, { as: 'invoices', foreignKey: 'room_id' })
     }
     toJSON() {
       return { ...this.get() }
@@ -41,19 +42,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     room_num_people: {
       type: DataTypes.INTEGER
-    },
-    room_num_ordered: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    room_empty: {
-      type: DataTypes.VIRTUAL,
-      get() {
-        return this.room_quantity - this.room_num_ordered;
-      },
-      set(value) {
-        throw new Error('Do not try to set the `fullName` value!');
-      }
     },
     room_services: DataTypes.STRING,
     room_surcharge: DataTypes.STRING

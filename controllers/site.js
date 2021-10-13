@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User, Hotel, Room, sequelize } = require('../models')
+const { User, Hotel, Room, Invoice, sequelize } = require('../models')
 const { uploadFile, getStreamFile } = require('../s3')
 const { Op } = require('sequelize')
 class SiteController {
@@ -65,43 +65,67 @@ class SiteController {
     }
 
     async filter(req, res) {
-        if (Object.keys(req.query).length === 0) return res.json({ msg: "success", data: [] })
+
         let { address, star, max, min, room, adult } = req.query
+        if (!room && !adult) {
+            room = 1
+            adult = 1
+        }
+        let dates = ['2010-01-19T07:45:51.000Z', '2010-01-20T07:45:51.000Z']
         let query = {
             where: {
                 [Op.and]: []
-            }
+            },
         }
-
-        // add query
+        // // add query
         if (address) query.where[Op.and].push({ hotel_address: { [Op.like]: `%${address}%` } })
         if (star) query.where[Op.and].push({ hotel_star: star })
-        if (min && max) query.where[Op.and].push({ '$rooms.room_price$': { [Op.and]: [{ [Op.gte]: min }, { [Op.lte]: max }] } })
-        // query.where[Op.and].push({ createdAt: { [Op.lte]: new Date() } })
+        if (min && max) query.where[Op.and].push({ '$rooms.room_price$': { [Op.between]: [+min, +max] } })
+
         query.include = [
             {
                 association: "rooms",
-            }
+                include: [
+                    {
+                        association: "invoices",
+                        where: {
+                            [Op.and]: [{ r_date: { [Op.between]: dates } }, { p_date: { [Op.between]: dates } }]
+                        },
+                        required: false,
+                        left: true
+                    }
+                ]
+
+            },
+
         ]
         // get data
         try {
-            let hotels = await Hotel.findAll(query)
-            if (room && adult) {
-                hotels = hotels.map((value, index) => {
-                    let rooms = value.rooms
-                    let filterRooms = []
-                    for (let roomValue of rooms) {
-                        let room_empty = roomValue.get({ plain: true }).room_empty
-                        let room_num_people = roomValue.get({ plain: true }).room_num_people
-                        if (room_empty >= room && (room_num_people * room) >= adult) {
-                            return value
-                        }
+            let hotels = (await Hotel.findAll(query))
+            hotels = hotels.map(el => {
+                let hotelValue = el.get({ plain: true })
+                let rooms = hotelValue.rooms
+                let roomFilter = []
+                for (let roomData of rooms) {
+                    if (roomData.invoices.length === 0) {
+                        let room_empty = roomData.room_quantity
+                        let room_num_people = roomData.room_num_people
+                        if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
+                        // console.log(roomFilter)
+                    }
+                    else {
+                        let room_empty = roomData.room_quantity - getOrderedQuantity(roomData.invoices)
+                        let room_num_people = roomData.room_num_people
+                        if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
 
                     }
+                }
+                if (roomFilter.length === 0) return
+                hotelValue.rooms = roomFilter
+                return hotelValue
+            })
 
-                })
 
-            }
             return res.json({ msg: "success", data: hotels })
         } catch (error) {
             console.log(error)
@@ -109,6 +133,17 @@ class SiteController {
         }
 
     }
+
+
+}
+
+function getOrderedQuantity(invoices) {
+    let roomQuantity = 0
+    for (let invoice of invoices) {
+        roomQuantity += invoice.room_quantity
+    }
+
+    return roomQuantity
 }
 const siteController = new SiteController
 

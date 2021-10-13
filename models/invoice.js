@@ -23,9 +23,15 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.STRING,
     hotel_id: DataTypes.INTEGER,
     user_uuid: DataTypes.STRING,
-    r_date: DataTypes.STRING,
-    p_date: DataTypes.STRING,
-    room_id: DataTypes.INTEGER
+    r_date: DataTypes.DATE,
+    p_date: DataTypes.DATE,
+    room_id: DataTypes.INTEGER,
+    room_quantity: {
+      type: DataTypes.INTEGER
+    },
+    status: {
+      type: DataTypes.STRING
+    }
   }, {
     sequelize,
     modelName: 'Invoice',
