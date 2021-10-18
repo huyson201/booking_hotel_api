@@ -3,7 +3,7 @@ const { Hotel } = require("../models")
 class HotelController {
     async index(req, res) {
         try {
-            let hotels = await Hotel.findAll()
+            let hotels = await Hotel.findAndCountAll()
             return res.json({ msg: "success", data: hotels })
         }
         catch (err) {

@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const jwt_decode = require('jwt-decode');
 const { User, Hotel, Room, Invoice, sequelize } = require('../models')
 const { uploadFile, getStreamFile } = require('../s3')
 const { Op } = require('sequelize')
@@ -11,13 +13,33 @@ class SiteController {
         let { user_email, user_password } = req.body
         try {
             let user = await User.findOne({ where: { user_email } })
-            if (!user) return res.json({ msg: "email not exist" })
-            let checkPw = bcrypt.compareSync(user_password, user.user_password)
-            if (checkPw) {
-                return res.json({ msg: "success", data: user })
-            }
 
-            return res.json({ msg: "password invalid" })
+            if (!user) return res.json({ msg: "email not exist" })
+
+            let checkPw = bcrypt.compareSync(user_password, user.user_password)
+
+            if (!checkPw) return res.json({ msg: "password not invalid" })
+
+            // generate token and refresh token
+            let payload = { ...user.dataValues, user_password: undefined, remember_token: undefined }
+
+            let token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h' })
+
+            let refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+
+            // save refresh token to user
+            user.update({ remember_token: refreshToken })
+
+            return res.json({
+                code: 0,
+                name: "",
+                message: "login successfully",
+                data: {
+                    user,
+                    token: token,
+                    refreshToken: refreshToken
+                }
+            })
         }
         catch (err) {
             console.log(err)
@@ -37,8 +59,11 @@ class SiteController {
             if (!user_role) user_role = 0
 
             let user = await User.create({ user_name, user_email, user_password, user_phone, user_role })
+
             return res.json({
-                msg: "success",
+                code: 0,
+                name: "",
+                message: "success",
                 data: user
             })
         }
@@ -66,12 +91,15 @@ class SiteController {
 
     async filter(req, res) {
 
-        let { address, star, max, min, room, adult } = req.query
+        let { address, star, max, min, room, adult, from, to } = req.query
+
         if (!room && !adult) {
             room = 1
             adult = 1
         }
-        let dates = ['2010-01-19T07:45:51.000Z', '2010-01-20T07:45:51.000Z']
+        if (!from || !to) return res.json({ code: 0, name: "", message: "not found date" })
+        let dates = [from, to]
+
         let query = {
             where: {
                 [Op.and]: []
@@ -79,7 +107,10 @@ class SiteController {
         }
         // // add query
         if (address) query.where[Op.and].push({ hotel_address: { [Op.like]: `%${address}%` } })
-        if (star) query.where[Op.and].push({ hotel_star: star })
+        if (star) {
+            let jsonStar = JSON.parse(star)
+            query.where[Op.and].push({ hotel_star: { [Op.in]: jsonStar } })
+        }
         if (min && max) query.where[Op.and].push({ '$rooms.room_price$': { [Op.between]: [+min, +max] } })
 
         query.include = [
@@ -111,7 +142,7 @@ class SiteController {
                         let room_empty = roomData.room_quantity
                         let room_num_people = roomData.room_num_people
                         if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
-                        // console.log(roomFilter)
+
                     }
                     else {
                         let room_empty = roomData.room_quantity - getOrderedQuantity(roomData.invoices)

@@ -39,6 +39,9 @@ module.exports = {
       room_surcharge: {
         type: Sequelize.STRING
       },
+      room_imgs: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
