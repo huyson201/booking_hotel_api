@@ -4,11 +4,7 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate({ Invoice }) {
       // define association here
       this.hasMany(Invoice, { as: 'invoices', foreignKey: 'room_id' })
@@ -44,7 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     room_services: DataTypes.STRING,
-    room_surcharge: DataTypes.STRING
+    room_surcharge: DataTypes.STRING,
+    room_imgs: {
+      type: DataTypes.TEXT
+    }
   }, {
     sequelize,
     modelName: 'Room',

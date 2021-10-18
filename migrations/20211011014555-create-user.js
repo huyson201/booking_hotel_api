@@ -23,6 +23,9 @@ module.exports = {
       user_role: {
         type: Sequelize.INTEGER
       },
+      remember_token: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
