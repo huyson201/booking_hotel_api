@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   HotelStaff.init({
+    staff_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     user_uuid: DataTypes.STRING,
     hotel_id: DataTypes.INTEGER,
     role: DataTypes.INTEGER

@@ -1,4 +1,5 @@
 const { Room } = require('../models')
+const { uploadFile } = require('../s3')
 class RoomController {
     async index(req, res) {
         try {
@@ -21,6 +22,28 @@ class RoomController {
         catch (err) {
             console.log(err)
             return res.send(err)
+        }
+    }
+
+    async create(req, res) {
+
+        let slideImgs = req.files
+        if (!slideImgs) return res.status(404).json({ code: 404, name: "Not found", message: "slide images required!" })
+        let { room_name, room_price, room_desc, room_area, room_bed, room_num_people, room_quantity, hotel_id } = req.body
+
+        try {
+            // upload img
+            let roomImgsUrl = []
+            for (let img of slideImgs) {
+                let result = await uploadFile(img)
+                roomImgsUrl.push(result.key)
+            }
+
+            let room = await Room.create({ room_name, hotel_id: +hotel_id, room_desc, room_area, room_price, room_bed: +room_bed, room_quantity: +room_quantity, room_num_people: +room_num_people, room_imgs: roomImgsUrl.join() })
+            return res.status(201).json({ code: 201, name: "Created", message: "create room successfully!", data: room })
+        } catch (error) {
+            console.log(error)
+            return res.json({ message: "Something error!" })
         }
     }
 }

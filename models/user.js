@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
     toJSON() {
-      return { ...this.get(), user_password: undefined }
+      return { ...this.get(), user_password: undefined, remember_token: undefined }
     }
   };
   User.init({

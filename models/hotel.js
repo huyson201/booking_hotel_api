@@ -9,10 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Room, Invoice }) {
+    static associate({ Room, Invoice, HotelStaff }) {
       // define association here
       this.hasMany(Room, { as: 'rooms', foreignKey: "hotel_id" })
       this.hasMany(Invoice, { as: 'invoices', foreignKey: "hotel_id" })
+      this.hasMany(HotelStaff, { as: 'staffs', foreignKey: 'hotel_id' })
     }
   };
   Hotel.init({
@@ -28,7 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     hotel_star: DataTypes.INTEGER,
     hotel_phone: DataTypes.STRING,
     hotel_desc: DataTypes.STRING,
-    hotel_img: DataTypes.STRING
+    hotel_img: DataTypes.TEXT,
+    hotel_slide: {
+      type: DataTypes.TEXT
+    }
   }, {
     sequelize,
     modelName: 'Hotel',

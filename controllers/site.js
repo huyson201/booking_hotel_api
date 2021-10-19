@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwt_decode = require('jwt-decode');
-const { User, Hotel, Room, Invoice, sequelize } = require('../models')
+const { User, Hotel, sequelize } = require('../models')
 const { uploadFile, getStreamFile } = require('../s3')
 const { Op } = require('sequelize')
 class SiteController {
@@ -72,6 +72,62 @@ class SiteController {
             return res.send(err)
         }
 
+    }
+
+    async logout(req, res) {
+        let user_uuid = req.user_uuid
+        if (!user_uuid) return res.json({ code: 0, name: "", message: "user_uuid not found" })
+
+        try {
+            let user = await User.findOne({ where: { user_uuid } })
+            if (!user) return res.json({ code: 0, name: "", message: "user_uuid invalid" })
+
+            user.remember_token = ""
+            user = await user.save()
+            return res.json({ code: 0, name: "LOG_OUT_SUCCESS", message: "logout success" })
+
+        } catch (error) {
+            return res.json({ code: 0, name: "", message: "something error!" })
+        }
+    }
+
+    async refreshToken(req, res) {
+        let refreshToken = req.body.refreshToken
+
+        try {
+            let user = await User.findOne({ where: { remember_token: refreshToken } })
+            if (!user) return res.json({ msg: "refresh token not exist" })
+            // check token
+            try {
+                // check expired
+                let { exp } = jwt_decode(refreshToken)
+                if (Date.now() >= exp * 1000) return res.json({ msg: "refresh token expired" })
+
+                // verify token
+                let decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+                if (!decoded) return res.json({ err: "token invalid" })
+
+                // generate token and refresh token
+                let payload = { ...user.dataValues, user_password: undefined, remember_token: undefined }
+
+                let token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h' })
+                console.log(user)
+                return res.json({
+                    code: 0,
+                    name: "",
+                    message: "success",
+                    token: token
+                })
+
+            } catch (err) {
+                // err
+                console.log(err)
+                return res.json({ err: "error verify refresh token" })
+            }
+
+        } catch (err) {
+            return res.json({ err: "something error!" })
+        }
     }
 
     async uploadFile(req, res) {

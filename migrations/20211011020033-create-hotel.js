@@ -27,7 +27,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       hotel_img: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
+      },
+      hotel_slide: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
