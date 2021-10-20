@@ -1,7 +1,8 @@
 const express = require("express")
 const invoiceRoute = express.Router()
 const invoiceController = require("../controllers/invoice")
-
-// invoiceRoute.get("/", invoiceController.index)
-// invoiceRoute.get('/:id(\\d+$)', invoiceController.getById)
+const authMiddleware = require('../middleware/auth')
+invoiceRoute.get("/", invoiceController.index)
+invoiceRoute.get('/:id(\\d+$)', invoiceController.getById)
+invoiceRoute.post('/', authMiddleware.checkToken, invoiceController.create)
 module.exports = invoiceRoute

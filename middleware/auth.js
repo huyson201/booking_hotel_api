@@ -9,6 +9,7 @@ class AuthMiddleware {
             try {
                 let decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
                 req.user_uuid = decoded.user_uuid
+                req.user_role = decoded.user_role
                 return next()
             }
             catch (err) {
@@ -41,7 +42,7 @@ class AuthMiddleware {
     async checkOwnerOfHotel(req, res, next) {
         let user_uuid = req.user_uuid
         let { hotel_id } = req.body
-        console.log(req.body)
+
         if (!hotel_id) return res.status(404).json({ code: 404, name: "Not found", message: "hotel_id not found!" })
 
         try {
