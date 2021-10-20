@@ -21,7 +21,7 @@ class SiteController {
             if (!checkPw) return res.json({ msg: "password not invalid" })
 
             // generate token and refresh token
-            let payload = { ...user.dataValues, user_password: undefined, remember_token: undefined }
+            let payload = { ...user.get({ plain: true }), remember_token: undefined, user_password: undefined, createdAt: undefined, updatedAt: undefined }
 
             let token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h' })
 
@@ -55,10 +55,7 @@ class SiteController {
             let checkUser = await User.findOne({ where: { user_email: user_email } })
             if (checkUser) return res.json({ msg: "email exist!" })
 
-            // tạo mới user
-            if (!user_role) user_role = 0
-
-            let user = await User.create({ user_name, user_email, user_password, user_phone, user_role })
+            let user = await User.create({ user_name, user_email, user_password, user_phone, user_role: 1 })
 
             return res.json({
                 code: 0,
@@ -108,7 +105,7 @@ class SiteController {
                 if (!decoded) return res.json({ err: "token invalid" })
 
                 // generate token and refresh token
-                let payload = { ...user.dataValues, user_password: undefined, remember_token: undefined }
+                let payload = { ...user.get({ plain: true }), remember_token: undefined, user_password: undefined, createdAt: undefined, updatedAt: undefined }
 
                 let token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h' })
                 console.log(user)

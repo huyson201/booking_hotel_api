@@ -3,10 +3,9 @@ Content-Type: application/json
 
 {
     "user_name": "huy son",
-    "user_email": "huyson202@gmail.com",
+    "user_email": "huyson2@gmail.com",
     "user_password": "123123",
     "confirm_password": "123123",
-    "user_role": 1,
     "user_phone": "016548745"
 }
 
@@ -63,6 +62,19 @@ Content-Type: application/json
     "delete_id": "48e34783-2270-4eab-a0b6-89aa47946731"
 }
 
+### create user 
+POST http://localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY2Q3NWNkMC1kNGZlLTQ2ZDktYjg5Ny1lNjY0NWE0NTZiM2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MCwiaWF0IjoxNjM0NzE0NDc4LCJleHAiOjE2MzQ3MjE2Nzh9.yd3Jsxp1vmishzhycVWNZQRFMAcOQORNzncHY5WbWcE
+
+{
+    "user_name": "huy son",
+    "user_email": "huyson4@gmail.com",
+    "user_password": "123123",
+    "user_phone": "016548745",
+    "user_role": 0
+}
+
 ### get staffs
 GET http://localhost:3000/staffs
 
@@ -99,3 +111,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJjN
     "hotel_id": 1
     
 }
+
+
+### get invoices
+GET http://localhost:3000/invoices
+
+
+### get invoice by id
+GET http://localhost:3000/invoices/1
+
+### get invoice of a user
+GET http://localhost:3000/users/eaf7d544-dbb2-4fbf-8f1d-043c4ca2616f/invoices
+
+### create a invoice
+POST http://localhost:3000/invoices
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzQ3MTU2NzUsImV4cCI6MTYzNDcyMjg3NX0.1GLbcxYs0Mj13TWeWPFsYrNb_QGGMglJrOn8fg5hU_c
+
+{
+    "price" : "120000",
+    "hotel_id": 1,
+    "r_date": "2021-10-20T12:00:00",
+    "p_date": "2021-10-21T12:00:00",
+    "room_id": 12,
+    "room_quantity": 1,
+    "status": "Dang dat coc"
+}
+
