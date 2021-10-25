@@ -24,7 +24,7 @@ class InvoiceController {
 
     async create(req, res) {
         let invoiceData = req.body
-        invoiceData.user_uuid = req.user_uuid
+        invoiceData.user_uuid = req.user.user_uuid
 
         try {
             await Invoice.create(invoiceData)

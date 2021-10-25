@@ -1,4 +1,4 @@
-const { Hotel } = require("../models")
+const { Hotel, HotelStaff } = require("../models")
 const { uploadFile } = require('../s3')
 class HotelController {
     async index(req, res) {
@@ -45,7 +45,7 @@ class HotelController {
     }
 
     async create(req, res) {
-        let user_uuid = req.user_uuid
+        let user_uuid = req.user.user_uuid
         let { hotel_name, hotel_star } = req.body
         if (!user_uuid || !hotel_name || !hotel_star) return res.json({ code: 0, name: "", message: "hotel's data invalid" })
         if (!req.files.avatar) return res.json({ code: 404, name: "Not found", message: "Hotel's avatar required!" })
@@ -82,18 +82,22 @@ class HotelController {
 
     async getStaffs(req, res) {
         let id = req.params.id
-        if (!id) return res.status(404).json({ msg: "id not found" })
+        if (!id) return res.status(400).dend('id not found')
 
         // init query
-        const query = {}
-        query.include = [
-            {
-                association: "staffs"
-            }
-        ]
+        const query = {
+            where: { hotel_id: id },
+            include: [
+                {
+                    association: 'staff_info',
+                    attributes: ['user_uuid', 'user_name', 'user_email', 'user_phone']
+                }
+            ]
+        }
+
         try {
-            let hotel = await Hotel.findByPk(id, query)
-            return res.json({ msg: "success", data: hotel })
+            let staffs = await HotelStaff.findAll(query)
+            return res.status(200).json({ msg: "success", data: staffs })
         }
         catch (err) {
             console.log(err)

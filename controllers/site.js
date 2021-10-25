@@ -72,7 +72,7 @@ class SiteController {
     }
 
     async logout(req, res) {
-        let user_uuid = req.user_uuid
+        let user_uuid = req.user.user_uuid
         if (!user_uuid) return res.json({ code: 0, name: "", message: "user_uuid not found" })
 
         try {

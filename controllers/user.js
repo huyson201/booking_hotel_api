@@ -28,10 +28,10 @@ class UserController {
 
     async delete(req, res) {
         let { delete_id } = req.body
-        if (!delete_id) return res.status(404).json({ code: 404, name: "Not found", message: "Delete_id not found!" })
+        if (!delete_id) return res.status(400).send('delete id not found')
         try {
             let user = await User.findByPk(delete_id)
-            if (!user) return res.status(404).json({ code: 404, name: "Not found", message: "User not found!" })
+            if (!user) return res.status(400).send('user not found')
 
             user = await user.destroy()
 
@@ -45,7 +45,7 @@ class UserController {
         }
         catch (err) {
             console.log(err)
-            return res.send(err)
+            return res.status(400).send(err.message)
         }
     }
 

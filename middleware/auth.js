@@ -8,22 +8,21 @@ class AuthMiddleware {
             token = req.headers.authorization.split(' ')[1]
             try {
                 let decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-                req.user_uuid = decoded.user_uuid
-                req.user_role = decoded.user_role
+                req.user = decoded
                 return next()
             }
             catch (err) {
-                return res.send(err)
+                return res.status(401).send(err.message)
             }
 
 
         }
 
-        return res.status(401).json({ code: 401, name: 'Access denied', message: 'Invalid token provided.' });
+        return res.status(401).send('Invalid token provided.');
     }
 
     async checkHotelOwnerPermission(req, res, next) {
-        let user_uuid = req.user_uuid
+        let user_uuid = req.user.user_uuid
         if (!user_uuid) return res.status(401).json({ code: 401, name: "Access denied", message: "Invalid user_uuid provided." })
         try {
             let user = await User.findOne({ where: { user_uuid } })
@@ -40,7 +39,7 @@ class AuthMiddleware {
     }
 
     async checkOwnerOfHotel(req, res, next) {
-        let user_uuid = req.user_uuid
+        let user_uuid = req.user.user_uuid
         let { hotel_id } = req.body
 
         if (!hotel_id) return res.status(404).json({ code: 404, name: "Not found", message: "hotel_id not found!" })
@@ -54,6 +53,15 @@ class AuthMiddleware {
             console.log(error)
             return res.json({ code: 0, name: "", message: "something error" })
         }
+    }
+
+    async checkAdminRole(req, res, next) {
+        let user = req.user
+        if (!user) return res.status(401).send('unauthorized')
+
+        if (user.user_role === 0) return next()
+
+        return res.status(403).send(`user don't have permission`)
     }
 }
 const authMiddleware = new AuthMiddleware
