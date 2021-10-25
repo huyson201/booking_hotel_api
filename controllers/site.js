@@ -160,6 +160,7 @@ class SiteController {
         }
         // // add query
         if (address) query.where[Op.and].push({ hotel_address: { [Op.like]: `%${address}%` } })
+
         if (star) {
             let jsonStar = JSON.parse(star)
             query.where[Op.and].push({ hotel_star: { [Op.in]: jsonStar } })
@@ -204,16 +205,20 @@ class SiteController {
 
                     }
                 }
-                if (roomFilter.length === 0) return
-                hotelValue.rooms = roomFilter
-                return hotelValue
+                if (roomFilter.length !== 0) {
+                    hotelValue.rooms = roomFilter
+                    return hotelValue
+                }
+
             })
 
-
+            hotels = hotels.filter(el => {
+                if (el != null) return el
+            })
             return res.json({ msg: "success", data: hotels })
         } catch (error) {
             console.log(error)
-            return res.send(error)
+            return res.status(400).send(error.message)
         }
 
     }
