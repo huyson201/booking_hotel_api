@@ -46,6 +46,24 @@ class RoomController {
             return res.json({ message: "Something error!" })
         }
     }
+
+    async delete(req, res) {
+        let room_id = req.body.room_id
+        if (!room_id) return res.status(400).send('room id not found')
+
+        try {
+            let room = await Room.findByPk(room_id)
+            if (!room) return res.status(400).send('room not found')
+
+            await room.destroy()
+
+            return res.status(204).json({ code: 204, name: "REMOVE_ROOM", message: 'successfully' })
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send(error.message)
+        }
+    }
 }
 
 const roomController = new RoomController

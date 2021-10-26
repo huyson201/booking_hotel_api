@@ -60,7 +60,7 @@ class UserController {
 
             let result = await uploadFile(file)
 
-            let imgUrl = process.env.APP_DOMAIN + "/images/" + result.key
+            let imgUrl = process.env.APP_BASE_URL + "/images/" + result.key
 
             data.user_img = imgUrl
 

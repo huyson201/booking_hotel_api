@@ -8,4 +8,5 @@ const upload = multer({ dest: 'uploads/' })
 roomRoute.get("/", roomController.index)
 roomRoute.get('/:id(\\d+$)', roomController.getById)
 roomRoute.post("/", authMiddleware.checkToken, upload.array('slideImgs'), authMiddleware.checkOwnerOfHotel, roomController.create)
+roomRoute.delete("/", authMiddleware.checkToken, authMiddleware.checkOwnerOfHotel, roomController.delete)
 module.exports = roomRoute

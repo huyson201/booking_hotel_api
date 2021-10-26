@@ -1,5 +1,6 @@
-const { Hotel, HotelStaff } = require("../models")
+const { Hotel, HotelStaff, Room } = require("../models")
 const { uploadFile } = require('../s3')
+require('dotenv').config()
 class HotelController {
     async index(req, res) {
         try {
@@ -27,20 +28,18 @@ class HotelController {
 
     async getRooms(req, res) {
         let id = req.params.id
-        if (!id) return res.status(404).json({ msg: "id not found" })
-        let query = {}
-        query.include = [
-            {
-                association: "rooms"
-            }
-        ]
+        if (!id) return res.status(400).send("id not found")
+        const query = {
+            where: { hotel_id: id }
+        }
+
         try {
-            let hotel = await Hotel.findByPk(id, query)
-            return res.json({ msg: "success", data: hotel })
+            let rooms = await Room.findAll(query)
+            return res.json({ msg: "success", data: rooms })
         }
         catch (err) {
             console.log(err)
-            return res.send(err)
+            return res.status(400).send(err.message)
         }
     }
 
@@ -58,14 +57,21 @@ class HotelController {
         try {
             // upload slide imgs
             let slideImgs = []
-            for (let img of req.files.photos) {
-                let result = await uploadFile(img)
-                slideImgs.push('/images/' + result.key)
+            if (req.files.photos.length > 0) {
+                for (let img of req.files.photos) {
+                    let result = await uploadFile(img)
+                    slideImgs.push('/images/' + result.key)
+                }
             }
 
+            let hotel_img = ''
             // upload avatar img
-            let resultAvt = await uploadFile(req.files.avatar[0])
-            let hotel_img = '/images/' + resultAvt.key
+            if (req.files.avatar && req.files.avatar.length > 0) {
+                let resultAvt = await uploadFile(req.files.avatar[0])
+                hotel_img = process.env.APP_BASE_URL + '/images/' + resultAvt.key
+            }
+
+
 
             let hotel = await Hotel.create({ user_uuid, hotel_name, hotel_star: +hotel_star, hotel_address, hotel_phone, hotel_desc, hotel_img, hotel_slide: slideImgs.join() })
             return res.status(201).json({

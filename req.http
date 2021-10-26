@@ -48,6 +48,16 @@ GET http://localhost:3000/rooms
 ### get rooms by id
 GET http://localhost:3000/rooms/1
 
+### delete a rooms
+DELETE  http://localhost:3000/rooms
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzUyMDk2NzQsImV4cCI6MTYzNTIxNjg3NH0.B8vARCf62fZO_s1pnkJIymP3z7T0q8qOHArh5F2GOj8
+
+{
+    "hotel_id": 1,
+    "room_id": 5
+}
+
 ### get users
 GET http://localhost:3000/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY2Q3NWNkMC1kNGZlLTQ2ZDktYjg5Ny1lNjY0NWE0NTZiM2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MCwiaWF0IjoxNjM1MTcwNDQ0LCJleHAiOjE2MzUxNzc2NDR9.77koy-e38IB_v5ildf-pgwQDmvmTiZZRVjCi8QqcmFA
