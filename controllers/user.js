@@ -58,11 +58,17 @@ class UserController {
 
             if (!user) return res.status(404).json({ code: 404, name: "Not found", message: "user not found!" })
 
-            let result = await uploadFile(file)
+            let imgUrl = ''
+            if (file) {
+                let result = await uploadFile(file)
 
-            let imgUrl = process.env.APP_BASE_URL + "/images/" + result.key
+                imgUrl = process.env.APP_BASE_URL + "/images/" + result.key
+            }
 
-            data.user_img = imgUrl
+            if (imgUrl !== '') {
+                data.user_img = imgUrl
+            }
+
 
             await user.update({ ...data, user_email: undefined })
 

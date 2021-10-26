@@ -14,7 +14,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "user_email": "huyson202@gmail.com",
+    "user_email": "huyson04@gmail.com",
     "user_password": "123123"
 }
 
@@ -133,6 +133,9 @@ GET http://localhost:3000/invoices/1
 ### get invoice of a user
 GET http://localhost:3000/users/eaf7d544-dbb2-4fbf-8f1d-043c4ca2616f/invoices
 
+### get invoices of hotel
+GET http://localhost:3000/hotels/1/invoices
+
 ### create a invoice
 POST http://localhost:3000/invoices
 Content-Type: application/json
@@ -148,3 +151,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
     "status": "Dang dat coc"
 }
 
+### update invoice
+PATCH http://localhost:3000/invoices
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlMzE0NDJhYi0wYWE2LTQxNjAtODU2Ni0xNzVmYmJmMTJhN2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAwQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MiwiaWF0IjoxNjM1MjEyMzAzLCJleHAiOjE2MzUyMTk1MDN9.Z5vCbenPAYKEByYcU1AaOCc7CtGMGHbnFVTiYw0ixyU
+
+{
+    "invoice_id": 16,
+    "status": "hoan thanh",
+    "room_quantity": 3
+}

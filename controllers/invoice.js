@@ -34,6 +34,22 @@ class InvoiceController {
             return res.json({ message: "Something error!" })
         }
     }
+
+    async update(req, res) {
+        let updateData = req.body
+
+        if (!updateData) return res.status(400).send('Data update not found')
+
+        try {
+            let invoice_id = updateData.invoice_id
+            let invoice = await Invoice.findByPk(invoice_id)
+            await invoice.update({ ...updateData, r_date: undefined, p_date: undefined, user_uuid: undefined, hotel_id: undefined, room_id: undefined })
+            return res.status(200).json({ message: "update invoice successfully" })
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send(error.message)
+        }
+    }
 }
 
 const invoiceController = new InvoiceController
