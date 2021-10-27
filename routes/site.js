@@ -14,5 +14,7 @@ siteRoute.post("/login", siteController.login)
 siteRoute.post('/register', siteController.register)
 siteRoute.post('/logout', authMiddleware.checkToken, siteController.logout)
 siteRoute.post('/refresh-token', siteController.refreshToken)
-
+siteRoute.post('/send-otp', siteController.sendOTP)
+siteRoute.post('/verify-otp', siteController.verifyOTP)
+siteRoute.patch('/reset-password', authMiddleware.checkRestPasswordToken, siteController.resetPassword)
 module.exports = siteRoute

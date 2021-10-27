@@ -20,6 +20,25 @@ class AuthMiddleware {
 
         return res.status(401).send('Invalid token provided.');
     }
+    async checkRestPasswordToken(req, res, next) {
+        let token
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            token = req.headers.authorization.split(' ')[1]
+            try {
+                let decoded = jwt.verify(token, process.env.RESET_PASSWORD_SECRET)
+
+                req.user_uuid = decoded.user_uuid
+                return next()
+            }
+            catch (err) {
+                return res.status(401).send(err.message)
+            }
+
+
+        }
+
+        return res.status(401).send('Invalid token provided.');
+    }
 
     async checkHotelOwnerPermission(req, res, next) {
         let user_uuid = req.user.user_uuid

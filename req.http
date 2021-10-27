@@ -14,7 +14,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "user_email": "huyson04@gmail.com",
+    "user_email": "huyson0@gmail.com",
     "user_password": "123123"
 }
 
@@ -160,4 +160,35 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlM
     "invoice_id": 16,
     "status": "hoan thanh",
     "room_quantity": 3
+}
+
+### send otp
+
+POST http://localhost:3000/send-otp
+Content-Type: application/json
+
+{
+    "to" : "+84984182217",
+    "channel": "sms"
+}
+
+### verify otp
+post http://localhost:3000/verify-otp
+Content-Type: application/json
+
+{
+    "to" : "+84984182217",
+    "code": "3854",
+    "user_uuid":"76f9756f-d878-438b-b2d0-8d7fa5315dea"
+}
+
+### rest password
+
+PATCH http://localhost:3000/reset-password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI3NmY5NzU2Zi1kODc4LTQzOGItYjJkMC04ZDdmYTUzMTVkZWEiLCJpYXQiOjE2MzUyMjI1ODksImV4cCI6MTYzNTIyMzQ4OX0.WaCwx3t82hMkh3oRIXhJoWpok8W2LFtFxcnnCDH35cY
+
+{
+    "new_password" : "huyson123",
+    "confirm_password": "huyson123"
 }

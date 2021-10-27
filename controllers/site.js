@@ -4,6 +4,10 @@ const jwt_decode = require('jwt-decode');
 const { User, Hotel, sequelize } = require('../models')
 const { uploadFile, getStreamFile } = require('../s3')
 const { Op } = require('sequelize')
+const twilioConfig = require('../config/twilio.js')
+
+const twilioClient = require('twilio')(twilioConfig.accountID, twilioConfig.authToken)
+
 class SiteController {
     index(req, res) {
         return res.json({ msg: "welcome" })
@@ -221,6 +225,75 @@ class SiteController {
             return res.status(400).send(error.message)
         }
 
+    }
+
+    async sendOTP(req, res) {
+        let channel = req.body.channel
+        let to = req.body.to
+        if (!channel) return res.status(400).send('channel not found')
+        if (!to) return res.status(400).send('phone not found')
+
+        try {
+            let result = await twilioClient.verify.services(twilioConfig.serviceSID)
+                .verifications.create({
+                    to: to,
+                    channel: channel,
+                    locale: 'vi'
+                })
+
+            return res.status(200).json({ data: result })
+
+        } catch (error) {
+            return res.status(400).send(error.message)
+        }
+    }
+
+    async verifyOTP(req, res) {
+        const { code, to, user_uuid } = req.body
+        if (!code) return res.status(400).send('code not found')
+        if (!to) return res.status(400).send('phone not found')
+        if (!user_uuid) return res.status(400).send('user uuid not found')
+        try {
+            let result = await twilioClient.verify
+                .services(twilioConfig.serviceSID)
+                .verificationChecks.create({
+                    to: to,
+                    code: code,
+                })
+
+            let token = jwt.sign({ user_uuid: user_uuid }, process.env.RESET_PASSWORD_SECRET, { expiresIn: '15m' })
+
+            return res.status(200).json({ token: token })
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send(error.message)
+        }
+    }
+
+    async resetPassword(req, res) {
+        const { new_password, confirm_password } = req.body
+        let user_uuid = req.user_uuid
+
+        if (!user_uuid) return res.status(400).send('user uuid not found')
+        if (!new_password) return res.status(400).send('new password not found')
+        if (!confirm_password) return res.status(400).send('confirm password not found')
+
+        if (new_password !== confirm_password) return res.status(400).send('confirm password invalid')
+
+        try {
+            console.log(user_uuid)
+            let user = await User.findByPk(user_uuid)
+            if (!user) return res.status(400).send('user not found')
+
+            user.user_password = new_password
+            await user.save()
+            return res.status(204).send('reset password success')
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send(error.message)
+        }
     }
 
 
