@@ -64,6 +64,36 @@ class RoomController {
             return res.status(400).send(error.message)
         }
     }
+
+    async update(req, res) {
+
+        let slideImgs = req.files
+        let data = req.body
+
+
+        try {
+            let room = req.room
+            if (!room) return res.status(400).send('room not found')
+
+            // upload img
+            let roomImgsUrl = []
+            if (slideImgs) {
+                for (let img of slideImgs) {
+                    let result = await uploadFile(img)
+                    roomImgsUrl.push(result.key)
+                }
+
+            }
+
+            if (roomImgsUrl.length > 0) data.room_imgs = roomImgsUrl.join()
+            await room.update(data)
+
+            return res.status(204).send('update room successfully')
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send("Something error!")
+        }
+    }
 }
 
 const roomController = new RoomController
