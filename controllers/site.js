@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwt_decode = require('jwt-decode');
-const { User, Hotel, sequelize } = require('../models')
-const { uploadFile, getStreamFile } = require('../s3')
+const { User, Hotel } = require('../models')
+const { getStreamFile } = require('../s3')
 const { Op } = require('sequelize')
+const validator = require('validator');
 const twilioConfig = require('../config/twilio.js')
-
 const twilioClient = require('twilio')(twilioConfig.accountID, twilioConfig.authToken)
 
 class SiteController {
@@ -52,11 +52,16 @@ class SiteController {
     }
 
     async register(req, res) {
-        let { user_name, user_email, user_password, confirm_password, user_phone, user_role } = req.body
-        if (confirm_password !== user_password) return res.json({ msg: "confirm password invalid" })
+        let { user_name, user_email, user_password, confirm_password, user_phone } = req.body
+
         try {
-            // kiểm tra email tồn tại
+            // kiểm tra email, phone number tồn tại
             let checkUser = await User.findOne({ where: { user_email: user_email } })
+            if (checkUser) return res.json({ msg: "email exist!" })
+
+            // kiểm tra phone number tồn tại
+
+            checkUser = await User.findOne({ where: { user_phone: user_phone } })
             if (checkUser) return res.json({ msg: "email exist!" })
 
             let user = await User.create({ user_name, user_email, user_password, user_phone, user_role: 1 })
@@ -131,19 +136,18 @@ class SiteController {
         }
     }
 
-    async uploadFile(req, res) {
-        const file = req.file
-        let result = await uploadFile(file)
-        console.log(result)
-        return res.json({ key: '/images/' + result.key })
-    }
 
     async getImage(req, res) {
         let key = req.params.key
-        if (!key) return res.json({ msg: "not found" })
+        if (!key) return res.status(400).send("not found")
 
-        let streamFile = getStreamFile(key)
-        return streamFile.pipe(res)
+        try {
+            let streamFile = getStreamFile(key)
+            return streamFile.pipe(res)
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send(error.message)
+        }
     }
 
     async filter(req, res) {
@@ -232,8 +236,24 @@ class SiteController {
         let to = req.body.to
         if (!channel) return res.status(400).send('channel not found')
         if (!to) return res.status(400).send('phone not found')
+        let user
+
+        //  check exist user
+        switch (channel) {
+            case "sms":
+                user = await User.findOne({ where: { user_phone: to.replace('+84', '0') } })
+                if (!user) return res.status(400).send('email not exist')
+                break
+            case "email":
+                user = await User.findOne({ where: { user_email: to } })
+                if (!user) return res.status(400).send('email not exist')
+                break;
+            default:
+                return res.status(400).send("channel invalid")
+        }
 
         try {
+
             let result = await twilioClient.verify.services(twilioConfig.serviceSID)
                 .verifications.create({
                     to: to,
@@ -244,24 +264,48 @@ class SiteController {
             return res.status(200).json({ data: result })
 
         } catch (error) {
+            console.log(error)
             return res.status(400).send(error.message)
         }
     }
 
     async verifyOTP(req, res) {
-        const { code, to, user_uuid } = req.body
+        const { code, to } = req.body
         if (!code) return res.status(400).send('code not found')
         if (!to) return res.status(400).send('phone not found')
-        if (!user_uuid) return res.status(400).send('user uuid not found')
+
+
+
         try {
-            let result = await twilioClient.verify
+            await twilioClient.verify
                 .services(twilioConfig.serviceSID)
                 .verificationChecks.create({
                     to: to,
                     code: code,
                 })
 
-            let token = jwt.sign({ user_uuid: user_uuid }, process.env.RESET_PASSWORD_SECRET, { expiresIn: '15m' })
+            // generate payload of token
+
+            let payload = {}
+
+            if (validator.isEmail(to)) {
+                console.log(to)
+                let user = await User.findOne({ where: { user_email: to } })
+                if (!user) return res.status(400).send("email not exist")
+
+                payload = { user_uuid: user.user_uuid }
+
+            }
+
+            if (validator.isMobilePhone(to, "vi-VN")) {
+                let user = await User.findOne({ where: { user_email: to } })
+                if (!user) return res.status(400).send("email not exist")
+                payload = { user_uuid: user.user_uuid }
+
+            }
+
+
+            let token = jwt.sign(payload, process.env.RESET_PASSWORD_SECRET, { expiresIn: '5m' })
 
             return res.status(200).json({ token: token })
 
@@ -288,6 +332,7 @@ class SiteController {
 
             user.user_password = new_password
             await user.save()
+            console.log(user.user_name)
             return res.status(204).send('reset password success')
 
         } catch (error) {

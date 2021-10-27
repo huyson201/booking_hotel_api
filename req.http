@@ -14,7 +14,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "user_email": "huyson0@gmail.com",
+    "user_email": "huyson202@gmail.com",
     "user_password": "123123"
 }
 
@@ -39,7 +39,7 @@ GET http://localhost:3000/hotels
 GET http://localhost:3000/hotels/1
 
 ### get all rooms of  hotel
-GET http://localhost:3000/hotels/12/rooms
+GET http://localhost:3000/hotels/1/rooms
 
 
 ### get all rooms
@@ -168,7 +168,7 @@ POST http://localhost:3000/send-otp
 Content-Type: application/json
 
 {
-    "to" : "+84984182217",
+    "to" : "0985478547",
     "channel": "sms"
 }
 
@@ -177,9 +177,8 @@ post http://localhost:3000/verify-otp
 Content-Type: application/json
 
 {
-    "to" : "+84984182217",
-    "code": "3854",
-    "user_uuid":"76f9756f-d878-438b-b2d0-8d7fa5315dea"
+    "to" : "huyson201@gmail.com",
+    "code": "6171"
 }
 
 ### rest password
