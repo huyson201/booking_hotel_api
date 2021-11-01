@@ -5,11 +5,11 @@ class HotelController {
     async index(req, res) {
         try {
             let hotels = await Hotel.findAndCountAll()
-            return res.json({ msg: "success", data: hotels })
+            return res.status(200).json({ msg: "success", data: hotels })
         }
         catch (err) {
             console.log(err)
-            return res.send(err)
+            return res.status(400).send(err.message)
         }
     }
 

@@ -1,13 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const jwt_decode = require('jwt-decode');
 const { User, Hotel } = require('../models')
 const { getStreamFile } = require('../s3')
 const { Op } = require('sequelize')
 const validator = require('validator');
 const twilioConfig = require('../config/twilio.js')
 const twilioClient = require('twilio')(twilioConfig.accountID, twilioConfig.authToken)
-
+const { generateToken } = require('../utils')
 class SiteController {
     index(req, res) {
         return res.json({ msg: "welcome" })
@@ -25,16 +24,14 @@ class SiteController {
             if (!checkPw) return res.json({ msg: "password not invalid" })
 
             // generate token and refresh token
-            let payload = { ...user.get({ plain: true }), remember_token: undefined, user_password: undefined, createdAt: undefined, updatedAt: undefined }
+            let token = generateToken(user, process.env.ACCESS_TOKEN_SECRET, '2h')
 
-            let token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h' })
-
-            let refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+            let refreshToken = generateToken(user, process.env.REFRESH_TOKEN_SECRET, '7d')
 
             // save refresh token to user
-            user.update({ remember_token: refreshToken })
+            await user.update({ remember_token: refreshToken })
 
-            return res.json({
+            return res.status(200).json({
                 code: 0,
                 name: "",
                 message: "login successfully",
@@ -47,7 +44,7 @@ class SiteController {
         }
         catch (err) {
             console.log(err)
-            return res.send(err)
+            return res.status(400).send(err.message)
         }
     }
 
@@ -57,13 +54,14 @@ class SiteController {
         try {
             // kiểm tra email, phone number tồn tại
             let checkUser = await User.findOne({ where: { user_email: user_email } })
-            if (checkUser) return res.json({ msg: "email exist!" })
+            if (checkUser) return res.status(400).json({ msg: "email exist!" })
 
             // kiểm tra phone number tồn tại
 
             checkUser = await User.findOne({ where: { user_phone: user_phone } })
-            if (checkUser) return res.json({ msg: "email exist!" })
+            if (checkUser) return res.status(400).json({ msg: "phone number exist!" })
 
+            if (user_password !== confirm_password) return res.status(400).send('Confirm password not math!')
             let user = await User.create({ user_name, user_email, user_password, user_phone, user_role: 1 })
 
             return res.json({
@@ -75,7 +73,7 @@ class SiteController {
         }
         catch (err) {
             console.log(err)
-            return res.send(err)
+            return res.status(400).send(err.message)
         }
 
     }
@@ -104,35 +102,28 @@ class SiteController {
             let user = await User.findOne({ where: { remember_token: refreshToken } })
             if (!user) return res.json({ msg: "refresh token not exist" })
             // check token
-            try {
-                // check expired
-                let { exp } = jwt_decode(refreshToken)
-                if (Date.now() >= exp * 1000) return res.json({ msg: "refresh token expired" })
 
-                // verify token
-                let decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-                if (!decoded) return res.json({ err: "token invalid" })
+            // verify token
+            let decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+            if (!decoded) return res.json({ err: "token invalid" })
 
-                // generate token and refresh token
-                let payload = { ...user.get({ plain: true }), remember_token: undefined, user_password: undefined, createdAt: undefined, updatedAt: undefined }
+            // generate token and refresh token
+            let payload = { ...user.get({ plain: true }), remember_token: undefined, user_password: undefined, createdAt: undefined, updatedAt: undefined }
 
-                let token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h' })
-                console.log(user)
-                return res.json({
-                    code: 0,
-                    name: "",
-                    message: "success",
-                    token: token
-                })
+            let token = generateToken(user, process.env.ACCESS_TOKEN_SECRET, '2h')
 
-            } catch (err) {
-                // err
-                console.log(err)
-                return res.json({ err: "error verify refresh token" })
-            }
+            return res.status(200).json({
+                code: 200,
+                name: "",
+                message: "success",
+                token: token
+            })
+
+
 
         } catch (err) {
-            return res.json({ err: "something error!" })
+            console.log(err)
+            return res.status(400).send(err.message)
         }
     }
 

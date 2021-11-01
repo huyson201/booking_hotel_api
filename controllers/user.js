@@ -1,5 +1,6 @@
 const { User, Invoice } = require('../models')
 const { uploadFile } = require('../s3')
+const { updateScope } = require('../scopes/user')
 require('dotenv').config()
 class UserController {
 
@@ -27,7 +28,7 @@ class UserController {
     }
 
     async delete(req, res) {
-        let { delete_id } = req.body
+        let delete_id = req.params.uuid
         if (!delete_id) return res.status(400).send('delete id not found')
         try {
             let user = await User.findByPk(delete_id)
@@ -51,8 +52,9 @@ class UserController {
 
     async update(req, res) {
         let file = req.file
-        let uuid = req.body.user_uuid
+        let uuid = req.params.user_uuid
         let data = req.body
+
         try {
             let user = await User.findByPk(uuid)
 
@@ -69,14 +71,13 @@ class UserController {
                 data.user_img = imgUrl
             }
 
+            await updateScope(req.user.user_role, user, data)
 
-            await user.update({ ...data, user_email: undefined })
-
-            return res.json({ code: 0, name: "", message: "update user success" })
+            return res.status(200).json({ data: user })
 
         } catch (error) {
             console.log(error)
-            return res.json({ code: 0, name: "", message: "Something error" })
+            return res.status(400).send(error.message)
         }
     }
 
@@ -86,11 +87,14 @@ class UserController {
             let checkUser = await User.findOne({ where: { user_email: userData.user_email } })
             if (checkUser) return res.json({ msg: "email exist!" })
 
+            checkUser = await User.findOne({ where: { user_phone: userData.user_phone } })
+            if (checkUser) return res.json({ msg: "phone number exist!" })
+
             await User.create(userData)
-            return res.json({ code: 201, name: "Created", message: "Create user successfully" })
+            return res.status(201).json({ code: 201, name: "Created", message: "Create user successfully" })
         } catch (error) {
             console.log(error)
-            return res.json({ code: 0, name: "", message: "Something error!" })
+            return res.status(400).send(error.message)
         }
     }
 

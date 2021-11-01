@@ -20,6 +20,7 @@ class AuthMiddleware {
 
         return res.status(401).send('Invalid token provided.');
     }
+
     async checkRestPasswordToken(req, res, next) {
         let token
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
@@ -74,14 +75,6 @@ class AuthMiddleware {
         }
     }
 
-    async checkAdminRole(req, res, next) {
-        let user = req.user
-        if (!user) return res.status(401).send('unauthorized')
-
-        if (user.user_role === 0) return next()
-
-        return res.status(403).send(`user don't have permission`)
-    }
 }
 const authMiddleware = new AuthMiddleware
 module.exports = authMiddleware

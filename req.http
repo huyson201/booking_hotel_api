@@ -1,26 +1,41 @@
-POST http://localhost:3000/register
+@localBaseURL = http://localhost:3000
+@hostBaseURL =  https://my-booking-hotel.herokuapp.com/
+
+# @name registerUser
+POST {{localBaseURL}}/register
 Content-Type: application/json
 
 {
     "user_name": "huy son",
-    "user_email": "huyson2@gmail.com",
-    "user_password": "123123",
-    "confirm_password": "123123",
-    "user_phone": "016548745"
+    "user_email": "huyson203@gmail.com",
+    "user_password": "asdasd",
+    "confirm_password": "asdasd",
+    "user_phone": "0984182213"
 }
 
 ### Login
-POST http://localhost:3000/login
+POST {{localBaseURL}}/login
 Content-Type: application/json
 
 {
-    "user_email": "huyson202@gmail.com",
-    "user_password": "123123"
+    "user_email": "huyson201@gmail.com",
+    "user_password": "huyson123"
+}
+
+### Login
+POST {{localBaseURL}}/login
+Content-Type: application/json
+
+{
+    "user_email": "huyson203@gmail.com",
+    "user_password": "asdasd"
 }
 
 
-### refresh token
-POST http://localhost:3000/refresh-token
+###
+
+# @name refreshToken
+POST {{localBaseURL}}/refresh-token
 Content-Type: application/json
 
 {
@@ -28,28 +43,40 @@ Content-Type: application/json
 }
 
 ### Login
-POST http://localhost:3000/logout
+POST {{localBaseURL}}/logout
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY2Q3NWNkMC1kNGZlLTQ2ZDktYjg5Ny1lNjY0NWE0NTZiM2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MCwiaWF0IjoxNjM1MTcwNDEyLCJleHAiOjE2MzUxNzc2MTJ9.ec6rEWuooaA3GXBcZNv3lYgPRDJYiPkWGOHgcchsw6A
 
-### get list hotels
-GET http://localhost:3000/hotels
+### 
 
-### get hotel by id = 1
-GET http://localhost:3000/hotels/1
+# @name getAllHotels
+GET {{localBaseURL}}/hotels
+Authorization: Bearer
 
-### get all rooms of  hotel
-GET http://localhost:3000/hotels/1/rooms
+### 
+
+# @name getHotelById
+GET {{localBaseURL}}/hotels/1
+Authorization: Bearer
+
+
+### 
+
+# @name getRoomOfHotel
+GET {{localBaseURL}}/hotels/1/rooms
+Authorization: Bearer
 
 
 ### get all rooms
-GET http://localhost:3000/rooms
+GET {{localBaseURL}}/rooms
 
 ### get rooms by id
-GET http://localhost:3000/rooms/1
+GET {{localBaseURL}}/rooms/1
 
 ### delete a rooms
-DELETE  http://localhost:3000/rooms
+
+
+DELETE  {{localBaseURL}}/rooms
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzUyMDk2NzQsImV4cCI6MTYzNTIxNjg3NH0.B8vARCf62fZO_s1pnkJIymP3z7T0q8qOHArh5F2GOj8
 
@@ -59,21 +86,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
 }
 
 ### get users
-GET http://localhost:3000/users
+
+# @name getAllUsers
+GET {{localBaseURL}}/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY2Q3NWNkMC1kNGZlLTQ2ZDktYjg5Ny1lNjY0NWE0NTZiM2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MCwiaWF0IjoxNjM1MTcwNDQ0LCJleHAiOjE2MzUxNzc2NDR9.77koy-e38IB_v5ildf-pgwQDmvmTiZZRVjCi8QqcmFA
-### get users by id
-GET http://localhost:3000/users/48e34783-2270-4eab-a0b6-89aa47946731
 
-### delete user by id
-DELETE  http://localhost:3000/users
+
+### 
+
+# @name getUserById
+GET {{localBaseURL}}/users/e957686f-c38b-4731-b0ca-0182ad970bdc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI2YzQyNzNlMC04ZjlmLTQ0NjUtYTc2MC1jMWJiYmYxNjMzYjAiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTc2OTkzOCwiZXhwIjoxNjM1Nzc3MTM4fQ.O0-fNZsNKwpVwgsfNcrGd__YDskMLgOp_pljCZXhW0k
+
+
+### 
+
+# @name deleteUser
+DELETE  {{localBaseURL}}/users/48e34783-2270-4eab-a0b6-89aa47946731
 Content-Type: application/json
+Authorization: Bearer
 
-{
-    "delete_id": "48e34783-2270-4eab-a0b6-89aa47946731"
-}
+###
 
-### create user 
-POST http://localhost:3000/users
+# @name createUser
+POST {{localBaseURL}}/users
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY2Q3NWNkMC1kNGZlLTQ2ZDktYjg5Ny1lNjY0NWE0NTZiM2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MCwiaWF0IjoxNjM0NzE0NDc4LCJleHAiOjE2MzQ3MjE2Nzh9.yd3Jsxp1vmishzhycVWNZQRFMAcOQORNzncHY5WbWcE
 
@@ -85,19 +121,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY
     "user_role": 0
 }
 
+
+###
+
+# @name updateUser
+PATCH {{localBaseURL}}/users/:uuid
+Authorization: Bearer 
+
+# send a form data here
+
+
+
 ### get staffs
-GET http://localhost:3000/staffs
+GET {{localBaseURL}}/staffs
 
 
 ### get staff by id
-GET http://localhost:3000/staffs/1
+GET {{localBaseURL}}/staffs/1
 
 ### get staff of hotel
-GET http://localhost:3000/hotels/1/staffs
+GET {{localBaseURL}}/hotels/1/staffs
 
 
 ### delete a staff
-DELETE http://localhost:3000/staffs
+DELETE {{localBaseURL}}/staffs
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzUxNzE3NzQsImV4cCI6MTYzNTE3ODk3NH0.cUUJ8h3Xw_vRfg4s4XQPhVfcysqYcnxLvlalQ1u7Vys
 
@@ -107,7 +154,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
 }
 
 ### create a staff
-POST http://localhost:3000/staffs
+POST {{localBaseURL}}/staffs
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzUxNzE3NzQsImV4cCI6MTYzNTE3ODk3NH0.cUUJ8h3Xw_vRfg4s4XQPhVfcysqYcnxLvlalQ1u7Vys
 
@@ -124,20 +171,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
 
 
 ### get invoices
-GET http://localhost:3000/invoices
+GET {{localBaseURL}}/invoices
 
 
 ### get invoice by id
-GET http://localhost:3000/invoices/1
+GET {{localBaseURL}}/invoices/1
 
-### get invoice of a user
-GET http://localhost:3000/users/eaf7d544-dbb2-4fbf-8f1d-043c4ca2616f/invoices
+### 
+
+# @name getInvoicesByUserId
+GET {{localBaseURL}}/users/eaf7d544-dbb2-4fbf-8f1d-043c4ca2616f/invoices
+Authorization: Bearer
 
 ### get invoices of hotel
-GET http://localhost:3000/hotels/1/invoices
+GET {{localBaseURL}}/hotels/1/invoices
 
 ### create a invoice
-POST http://localhost:3000/invoices
+POST {{localBaseURL}}/invoices
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzQ3MTU2NzUsImV4cCI6MTYzNDcyMjg3NX0.1GLbcxYs0Mj13TWeWPFsYrNb_QGGMglJrOn8fg5hU_c
 
@@ -152,7 +202,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
 }
 
 ### update invoice
-PATCH http://localhost:3000/invoices
+PATCH {{localBaseURL}}/invoices
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlMzE0NDJhYi0wYWE2LTQxNjAtODU2Ni0xNzVmYmJmMTJhN2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAwQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MiwiaWF0IjoxNjM1MjEyMzAzLCJleHAiOjE2MzUyMTk1MDN9.Z5vCbenPAYKEByYcU1AaOCc7CtGMGHbnFVTiYw0ixyU
 
@@ -164,28 +214,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlM
 
 ### send otp
 
-POST http://localhost:3000/send-otp
-Content-Type: application/json
-
-{
-    "to" : "0985478547",
-    "channel": "sms"
-}
-
-### verify otp
-post http://localhost:3000/verify-otp
+POST {{localBaseURL}}/send-otp
 Content-Type: application/json
 
 {
     "to" : "huyson201@gmail.com",
-    "code": "6171"
+    "channel": "email"
+}
+
+### verify otp
+post {{localBaseURL}}/verify-otp
+Content-Type: application/json
+
+{
+    "to" : "huyson201@gmail.com",
+    "code": "9806"
 }
 
 ### rest password
 
-PATCH http://localhost:3000/reset-password
+PATCH {{localBaseURL}}/reset-password
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI3NmY5NzU2Zi1kODc4LTQzOGItYjJkMC04ZDdmYTUzMTVkZWEiLCJpYXQiOjE2MzUyMjI1ODksImV4cCI6MTYzNTIyMzQ4OX0.WaCwx3t82hMkh3oRIXhJoWpok8W2LFtFxcnnCDH35cY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJpYXQiOjE2MzUzMjkwMDMsImV4cCI6MTYzNTMyOTMwM30.AfHar7FeKv9m8QOAN1_8H9yXRD2eJnOQMVtbhENfEQE
 
 {
     "new_password" : "huyson123",

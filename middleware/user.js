@@ -1,8 +1,59 @@
 const validator = require('validator')
+const {
+    canGetUserDetail,
+    canDeleteUser,
+    canUpdateUser,
+    canGetUsers,
+    canCreateUser,
+    canGetInvoices
+} = require('../permissions/user')
 class UserMiddleware {
 
-    checkUpdateRole(req, res, next) {
-        if (req.user.user_role !== 0 && req.user.user_uuid !== req.body.user_uuid) return res.status(401).json({ code: 401, name: "", message: "Don't have permission!" })
+    authGetAll(req, res, next) {
+        if (!canGetUsers(req.user)) {
+            return res.status(403).send("Don't Have Permission")
+        }
+
+        return next()
+    }
+
+    authGetDetail(req, res, next) {
+        if (!canGetUserDetail(req.user, req.params.uuid)) {
+            return res.status(403).send("Don't Have Permission")
+        }
+
+        return next()
+    }
+
+    authDeleteUser(req, res, next) {
+        if (!canDeleteUser(req.user)) {
+            return res.status(403).send("Don't Have Permission")
+        }
+
+        return next()
+    }
+
+    authUpdateUser(req, res, next) {
+        if (!canUpdateUser(req.user, req.params.uuid)) {
+            return res.status(403).send("Don't Have Permission")
+        }
+
+        return next()
+    }
+
+    authCreateUser(req, res, next) {
+        if (!canCreateUser(req.user)) {
+            return res.status(403).send("Don't Have Permission")
+        }
+
+        return next()
+    }
+
+    authGetInvoices(req, res, next) {
+        if (!canGetInvoices(req.user, req.params.uuid)) {
+            return res.status(403).send("Don't Have Permission")
+        }
+
         return next()
     }
 
