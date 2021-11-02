@@ -2,6 +2,8 @@
 @hostBaseURL =  https://my-booking-hotel.herokuapp.com/
 
 # @name registerUser
+# @note
+# Email and phone number require unique
 POST {{localBaseURL}}/register
 Content-Type: application/json
 
@@ -13,7 +15,9 @@ Content-Type: application/json
     "user_phone": "0984182213"
 }
 
-### Login
+###
+
+# @name login
 POST {{localBaseURL}}/login
 Content-Type: application/json
 
@@ -67,25 +71,40 @@ GET {{localBaseURL}}/hotels/1/rooms
 Authorization: Bearer
 
 
-### get all rooms
+###
+
+# @name getAllRoom
 GET {{localBaseURL}}/rooms
 
-### get rooms by id
+###
+
+# @name getRoomById
 GET {{localBaseURL}}/rooms/1
 
-### delete a rooms
+### 
 
-
-DELETE  {{localBaseURL}}/rooms
+# @name deleteRoom
+# @note
+# requrie params id 
+DELETE  {{localBaseURL}}/rooms/:id
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzUyMDk2NzQsImV4cCI6MTYzNTIxNjg3NH0.B8vARCf62fZO_s1pnkJIymP3z7T0q8qOHArh5F2GOj8
 
 {
     "hotel_id": 1,
-    "room_id": 5
 }
 
-### get users
+###
+
+# @name updateRoom
+# @note
+# send A form data
+# image field name: slideImgs[] is a array images
+
+PATCH {{localBaseURL}}/rooms/:id
+Authorization: Bearer
+
+### 
 
 # @name getAllUsers
 GET {{localBaseURL}}/users
@@ -125,18 +144,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY
 ###
 
 # @name updateUser
+# @note
+# send a form data
+# user image field name: avatar
 PATCH {{localBaseURL}}/users/:uuid
 Authorization: Bearer 
 
-# send a form data here
 
+### 
 
-
-### get staffs
+# @name getAllStaff
 GET {{localBaseURL}}/staffs
 
 
-### get staff by id
+###
+
+# @name getStaffById
 GET {{localBaseURL}}/staffs/1
 
 ###
