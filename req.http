@@ -243,13 +243,15 @@ GET {{localBaseURL}}/invoices/1
 
 # @name createInvoice
 POST {{localBaseURL}}/invoices
+### create a invoice
+POST https://my-booking-hotel.herokuapp.com/invoices
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzQ3MTU2NzUsImV4cCI6MTYzNDcyMjg3NX0.1GLbcxYs0Mj13TWeWPFsYrNb_QGGMglJrOn8fg5hU_c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJjOTEyNGZmYy1jZWZkLTRlNzUtOTE2ZC03MWUwOGZkN2ZhMDEiLCJ1c2VyX2VtYWlsIjoib2FuaEBnbWFpbC5jb20iLCJ1c2VyX2ltZyI6bnVsbCwidXNlcl9uYW1lIjoia2lldSBvYW5oIiwidXNlcl9waG9uZSI6IjA4NDU0NTMyOTEiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTM4Njc4MCwiZXhwIjoxNjM1MzkzOTgwfQ.xy-D0Dp_kokf8WKF2-ujZxB2dmJSw_wbToZyv2O2YkY
 
 {
     "price" : "120000",
     "hotel_id": 1,
-    "r_date": "2021-10-20T12:00:00",
+    "r_date": "gfsdfgs",
     "p_date": "2021-10-21T12:00:00",
     "room_id": 12,
     "room_quantity": 1,

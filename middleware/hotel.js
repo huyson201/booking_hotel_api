@@ -1,6 +1,6 @@
 const {
     canGetHotels,
-    canGetDetails,
+    // canGetDetails,
     canCreateHotel
 } = require('../permissions/hotel')
 class HotelMiddleware {

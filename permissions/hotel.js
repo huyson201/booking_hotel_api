@@ -13,4 +13,5 @@ const canCreateHotel = (user) => {
     )
 }
 
-module.exports = { canGetHotels, canGetDetails, canCreateHotel }
+// canGetDetails,
+module.exports = { canGetHotels, canCreateHotel }
