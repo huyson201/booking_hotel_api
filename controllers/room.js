@@ -48,7 +48,7 @@ class RoomController {
     }
 
     async delete(req, res) {
-        let room_id = req.body.room_id
+        let room_id = req.params.id
         if (!room_id) return res.status(400).send('room id not found')
 
         try {

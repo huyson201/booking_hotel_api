@@ -1,4 +1,5 @@
 const { HotelStaff, User, sequelize } = require('../models')
+const role = require('../config/role')
 class StaffController {
     async index(req, res) {
         try {
@@ -41,11 +42,10 @@ class StaffController {
     }
 
     async delete(req, res) {
-        let { staff_id, hotel_id } = req.body
-        if (!staff_id || !hotel_id) return res.status(404).json({ code: 404, name: "Not found", message: "Staff_id or hotel_id not found!" })
+        let { staff_id } = req.params.id
 
         try {
-            let staff = await HotelStaff.findOne({ where: { staff_id, hotel_id } })
+            let staff = await HotelStaff.findOne({ where: { staff_id } })
             if (!staff) return res.status(404).json({ code: 404, name: "Not found", message: "Staff not found!" })
 
             staff = await staff.destroy()
@@ -65,17 +65,19 @@ class StaffController {
     }
 
     async create(req, res) {
-        let { user_name, user_email, user_password, user_phone, user_role, hotel_id, staff_role } = req.body
+        let { user_name, user_email, user_password, user_phone, user_role, hotel_id } = req.body
         const t = await sequelize.transaction()
         try {
             // kiểm tra email tồn tại
             let checkUser = await User.findOne({ where: { user_email: user_email } })
             if (checkUser) return res.json({ msg: "email exist!" })
 
-            // tạo mới user
-            if (!user_role) user_role = 0
+            checkUser = await User.findOne({ where: { user_phone } })
+            if (checkUser) return res.json({ msg: "phone number exist!" })
 
-            let user = await User.create({ user_name, user_email, user_password, user_phone, user_role }, { transaction: t })
+            // tạo mới user
+
+            let user = await User.create({ user_name, user_email, user_password, user_phone, user_role: role.HOTEL_STAFF }, { transaction: t })
 
             let staff = await HotelStaff.create({ user_uuid: user.user_uuid, hotel_id, role: staff_role }, { transaction: t })
 
@@ -96,6 +98,19 @@ class StaffController {
                 name: "",
                 message: "Something error!"
             })
+        }
+    }
+
+    async update(req, res) {
+        let data = req.body
+        let staff_id = req.params.id
+
+        try {
+            let staff = await HotelStaff.update(data, { where: { staff_id } })
+            return res.status(200).json({ message: "update staff successfully", data: staff })
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send(error.message)
         }
     }
 }

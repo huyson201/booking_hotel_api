@@ -1,6 +1,7 @@
 const {
     canGetHotels,
-    canGetDetails
+    canGetDetails,
+    canCreateHotel
 } = require('../permissions/hotel')
 class HotelMiddleware {
     authGetHotels(req, res, next) {
@@ -11,8 +12,10 @@ class HotelMiddleware {
         return next()
     }
 
-    authGetDetailHotel(req, res, next) {
-        if (!canGetDetails(req.user, req.params.id)) {
+
+
+    authCreateHotel(req, res, next) {
+        if (!canCreateHotel(req.user)) {
             return res.status(403).send("Don't have permission")
         }
 

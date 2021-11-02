@@ -113,9 +113,15 @@ class HotelController {
 
     async getInvoices(req, res) {
         let id = req.params.id
+        const { status } = req.query
         if (!id) return res.status(400).send("id not found")
+
         const query = {
             where: { hotel_id: id }
+        }
+
+        if (status) {
+            query.where.status = status
         }
 
         try {

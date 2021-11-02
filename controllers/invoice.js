@@ -1,24 +1,33 @@
 const { Invoice } = require('../models')
 class InvoiceController {
     async index(req, res) {
+        const { status } = req.query
+        const query = {
+            where: {}
+        }
+
+        if (status) {
+            query.where.status = status
+        }
+
         try {
-            let invoices = await Invoice.findAll()
-            return res.json({ code: 200, name: "", message: "", data: invoices })
+            let invoices = await Invoice.findAll(query)
+            return res.status(200).json({ message: "", data: invoices })
         } catch (error) {
             console.log(error)
-            return res.json({ message: "Something error!" })
+            return res.status(400).json({ message: "Something error!" })
         }
     }
 
     async getById(req, res) {
         let id = req.params.id
-        if (!id) return res.status(404).json({ code: 404, name: "Not found", message: "Invoice's id not found!" })
+        if (!id) return res.status(400).send('Id not found')
         try {
             let invoice = await Invoice.findByPk(id)
             return res.json({ code: 200, name: "", message: "success", data: invoice })
         } catch (error) {
             console.log(error)
-            return res.json({ message: "Something error!" })
+            return res.status(400).json({ message: "Something error!" })
         }
     }
 
@@ -28,23 +37,33 @@ class InvoiceController {
 
         try {
             await Invoice.create(invoiceData)
-            return res.json({ code: 200, name: "", message: "success", data: invoiceData })
+            return res.status(201).json({ message: "success", data: invoiceData })
         } catch (error) {
             console.log(error)
-            return res.json({ message: "Something error!" })
+            return res.status(400).send(error.message)
         }
     }
 
     async update(req, res) {
         let updateData = req.body
-
+        let id = req.params.id
         if (!updateData) return res.status(400).send('Data update not found')
 
         try {
-            let invoice_id = updateData.invoice_id
-            let invoice = await Invoice.findByPk(invoice_id)
+            let invoice = await Invoice.findByPk(id)
             await invoice.update({ ...updateData, r_date: undefined, p_date: undefined, user_uuid: undefined, hotel_id: undefined, room_id: undefined })
-            return res.status(200).json({ message: "update invoice successfully" })
+            return res.status(200).json({ message: "update invoice successfully", data: invoice })
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send(error.message)
+        }
+    }
+
+    async delete(req, res) {
+        let id = req.params.id
+        try {
+            await Invoice.destroy(id)
+            return res.status(204).send()
         } catch (error) {
             console.log(error)
             return res.status(400).send(error.message)

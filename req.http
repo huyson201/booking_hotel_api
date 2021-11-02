@@ -139,21 +139,28 @@ GET {{localBaseURL}}/staffs
 ### get staff by id
 GET {{localBaseURL}}/staffs/1
 
-### get staff of hotel
+###
+
+# @name getStaffOfHotel
+
+# @note 
+# only admin or hotel owner can get staff
 GET {{localBaseURL}}/hotels/1/staffs
+Authorization: Bearer
 
+### 
 
-### delete a staff
-DELETE {{localBaseURL}}/staffs
+# @name deleteStaff
+# @note
+# only owner of staff can delete staffs
+DELETE {{localBaseURL}}/staffs/:id
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzUxNzE3NzQsImV4cCI6MTYzNTE3ODk3NH0.cUUJ8h3Xw_vRfg4s4XQPhVfcysqYcnxLvlalQ1u7Vys
 
-{
-    "hotel_id": 1,
-    "staff_id": 4
-}
 
-### create a staff
+### 
+
+# @name createStaff
 POST {{localBaseURL}}/staffs
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzUxNzE3NzQsImV4cCI6MTYzNTE3ODk3NH0.cUUJ8h3Xw_vRfg4s4XQPhVfcysqYcnxLvlalQ1u7Vys
@@ -170,12 +177,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
 }
 
 
-### get invoices
-GET {{localBaseURL}}/invoices
+###
+
+# @name updateStaff
+# @note
+# updating data is a json
+PATCH {{localBaseURL}}/staffs/:id
+Content-Type: application/json
+Authorization: Bearer
 
 
-### get invoice by id
-GET {{localBaseURL}}/invoices/1
 
 ### 
 
@@ -183,10 +194,31 @@ GET {{localBaseURL}}/invoices/1
 GET {{localBaseURL}}/users/eaf7d544-dbb2-4fbf-8f1d-043c4ca2616f/invoices
 Authorization: Bearer
 
-### get invoices of hotel
+###
+
+# @name getInvoicesOfHotel
+
+# @note
+# status query ?status=
 GET {{localBaseURL}}/hotels/1/invoices
 
-### create a invoice
+###
+
+# @name getAllInvoices
+
+# @note
+# status query ?status=
+GET {{localBaseURL}}/invoices
+
+
+###
+
+# @name getInvoiceById
+GET {{localBaseURL}}/invoices/1
+
+### 
+
+# @name createInvoice
 POST {{localBaseURL}}/invoices
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzQ3MTU2NzUsImV4cCI6MTYzNDcyMjg3NX0.1GLbcxYs0Mj13TWeWPFsYrNb_QGGMglJrOn8fg5hU_c
@@ -201,17 +233,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
     "status": "Dang dat coc"
 }
 
-### update invoice
-PATCH {{localBaseURL}}/invoices
+###
+
+# @name updateInvoice
+PATCH {{localBaseURL}}/invoices/:id
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlMzE0NDJhYi0wYWE2LTQxNjAtODU2Ni0xNzVmYmJmMTJhN2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAwQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MiwiaWF0IjoxNjM1MjEyMzAzLCJleHAiOjE2MzUyMTk1MDN9.Z5vCbenPAYKEByYcU1AaOCc7CtGMGHbnFVTiYw0ixyU
 
 {
-    "invoice_id": 16,
     "status": "hoan thanh",
     "room_quantity": 3
 }
 
+###
+
+# @name deleteInvoice
+
+DELETE {{localBaseURL}}/invoices/id
+Authorization: Bearer
 ### send otp
 
 POST {{localBaseURL}}/send-otp

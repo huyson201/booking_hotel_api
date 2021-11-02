@@ -4,6 +4,6 @@ module.exports = {
     HOTEL_STAFF: 2,
     USER: 3,
     STAFF: {
-        MANAGER: 0
+
     }
 }
