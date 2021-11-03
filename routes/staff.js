@@ -14,4 +14,5 @@ staffRoute.delete("/:id(\\d+$)", authMiddleware.checkToken, staffMiddleware.auth
 
 staffRoute.patch('/:id(\\d+$)', authMiddleware.checkToken, staffMiddleware.authUpdateStaff, staffController.update)
 
+staffRoute.get('/:id/hotels', authMiddleware.checkToken, staffController.getHotel)
 module.exports = staffRoute

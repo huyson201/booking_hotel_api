@@ -109,6 +109,18 @@ class StaffController {
             return res.status(400).send(error.message)
         }
     }
+
+    async getHotel(req, res) {
+        let id = req.params.id
+        try {
+            let staff = await HotelStaff.findByPk(id)
+            let hotel = await staff.getHotel()
+            return res.status(200).json({ data: hotel })
+        } catch (error) {
+            console.log(error)
+            return res.status(400).send(error.message)
+        }
+    }
 }
 
 const staffController = new StaffController

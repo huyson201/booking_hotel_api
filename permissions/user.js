@@ -41,11 +41,18 @@ const canGetInvoices = (user, userId) => {
     )
 }
 
+const canGetHotelsOfUser = (user, userId) => {
+    return (
+        user.user_role === role.ADMIN ||
+        user.user_uuid === userId
+    )
+}
 module.exports = {
     canGetUserDetail,
     canDeleteUser,
     canUpdateUser,
     canGetUsers,
     canCreateUser,
-    canGetInvoices
+    canGetInvoices,
+    canGetHotelsOfUser
 }

@@ -5,7 +5,8 @@ const {
     canUpdateUser,
     canGetUsers,
     canCreateUser,
-    canGetInvoices
+    canGetInvoices,
+    canGetHotelsOfUser
 } = require('../permissions/user')
 class UserMiddleware {
 
@@ -57,6 +58,13 @@ class UserMiddleware {
         return next()
     }
 
+    authGetHotels(req, res, next) {
+        if (!canGetHotelsOfUser(req.user, req.params.uuid)) {
+            return res.status(403).send("Don't Have Permission")
+        }
+
+        return next()
+    }
     validateUserData(req, res, next) {
         let { user_email, user_phone, user_password, confirm_password } = req.body
 

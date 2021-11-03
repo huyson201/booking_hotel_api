@@ -31,8 +31,8 @@ POST {{localBaseURL}}/login
 Content-Type: application/json
 
 {
-    "user_email": "huyson203@gmail.com",
-    "user_password": "asdasd"
+    "user_email": "huyson2010@gmail.com",
+    "user_password": "123123"
 }
 
 
@@ -69,6 +69,12 @@ Authorization: Bearer
 # @name getRoomOfHotel
 GET {{localBaseURL}}/hotels/1/rooms
 Authorization: Bearer
+
+###
+
+#  @name getHotelsOfUser
+GET {{localBaseURL}}/users/e957686f-c38b-4731-b0ca-0182ad970bdc/hotels
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTkyNDQ2MywiZXhwIjoxNjM1OTMxNjYzfQ.GkmYFmmiMVmLcQY8qfePj6h_eT_zs8nW9vn2bkqpIi0
 
 
 ###
@@ -171,6 +177,11 @@ GET {{localBaseURL}}/staffs/1
 GET {{localBaseURL}}/hotels/1/staffs
 Authorization: Bearer
 
+###
+
+# @name getHotelOfStaff
+GET {{localBaseURL}}/staffs/3/hotels
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI5MTJiMWZmMC0wMDdjLTQ3NjItODYxZi1hMjNlNzJkZGRkMGMiLCJ1c2VyX3JvbGUiOjIsImlhdCI6MTYzNTkyNDg1NywiZXhwIjoxNjM1OTMyMDU3fQ.9m2aMv_8Jemfn8lEbvtaJF4eq8GNFfdmdKP11Jy-CUw
 ### 
 
 # @name deleteStaff
@@ -207,7 +218,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlO
 # updating data is a json
 PATCH {{localBaseURL}}/staffs/:id
 Content-Type: application/json
-Authorization: Bearer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI5MTJiMWZmMC0wMDdjLTQ3NjItODYxZi1hMjNlNzJkZGRkMGMiLCJ1c2VyX3JvbGUiOjIsImlhdCI6MTYzNTkyNDg1NywiZXhwIjoxNjM1OTMyMDU3fQ.9m2aMv_8Jemfn8lEbvtaJF4eq8GNFfdmdKP11Jy-CUw
 
 
 

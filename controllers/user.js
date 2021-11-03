@@ -1,4 +1,4 @@
-const { User, Invoice } = require('../models')
+const { User, Invoice, Hotel } = require('../models')
 const { uploadFile } = require('../s3')
 const { updateScope } = require('../scopes/user')
 require('dotenv').config()
@@ -107,6 +107,17 @@ class UserController {
         } catch (error) {
             console.log(error)
             return res.json({ code: 0, name: "", message: "Something error!" })
+        }
+    }
+
+    async getHotels(req, res) {
+        let user_uuid = req.params.uuid
+        try {
+            let hotels = await Hotel.findAll({ where: { user_uuid } })
+            return res.status(200).json({ data: hotels })
+        }
+        catch (error) {
+            return res.status(400).send(err.message)
         }
     }
 }

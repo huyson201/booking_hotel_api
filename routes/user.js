@@ -17,5 +17,6 @@ userRoute.delete("/:uuid", userMiddleware.authDeleteUser, userController.delete)
 
 userRoute.get('/:uuid/invoices', userMiddleware.authGetInvoices, userController.getInvoices)
 
+userRoute.get('/:uuid/hotels', userMiddleware.authGetHotels, userController.getHotels)
 
 module.exports = userRoute
