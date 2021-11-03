@@ -52,7 +52,7 @@ class UserController {
 
     async update(req, res) {
         let file = req.file
-        let uuid = req.params.user_uuid
+        let uuid = req.params.uuid
         let data = req.body
 
         try {
@@ -61,8 +61,8 @@ class UserController {
             if (!user) return res.status(404).json({ code: 404, name: "Not found", message: "user not found!" })
 
             let imgUrl = ''
-            if (file) {
-                let result = await uploadFile(file)
+            if (data.avatar) {
+                let result = await uploadFile(data.avatar)
 
                 imgUrl = process.env.APP_BASE_URL + "/images/" + result.key
             }
