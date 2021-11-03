@@ -5,7 +5,7 @@ const {
 } = require('../permissions/staff')
 class StaffMiddleware {
     async authDeleteStaff(req, res, next) {
-        if (!(await canDeleteStaff(req.user, res.params.id))) {
+        if (!(await canDeleteStaff(req.user))) {
             return res.status(403).send("Don't have permission!")
         }
 
@@ -21,7 +21,7 @@ class StaffMiddleware {
     }
 
     async authCreateStaff(req, res, next) {
-        if (!(await canCreateStaff(req.user, res.params.id))) {
+        if (!(await canCreateStaff(req.user))) {
             return res.status(403).send("Don't have permission!")
         }
 
