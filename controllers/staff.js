@@ -65,7 +65,7 @@ class StaffController {
     }
 
     async create(req, res) {
-        let { user_name, user_email, user_password, user_phone, user_role, hotel_id } = req.body
+        let { user_name, user_email, user_password, user_phone, staff_role, hotel_id } = req.body
         const t = await sequelize.transaction()
         try {
             // kiểm tra email tồn tại
@@ -93,11 +93,7 @@ class StaffController {
         catch (err) {
             await t.rollback();
             console.log(err)
-            return res.json({
-                code: 0,
-                name: "",
-                message: "Something error!"
-            })
+            return res.status(400).send(err.message)
         }
     }
 
