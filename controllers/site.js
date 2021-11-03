@@ -143,83 +143,154 @@ class SiteController {
 
     async filter(req, res) {
 
-        let { address, star, max, min, room, adult, from, to } = req.query
+        // let { address, star, max, min, room, adult, from, to } = req.query
 
-        if (!room && !adult) {
-            room = 1
-            adult = 1
+        // if (!room && !adult) {
+        //     room = 1
+        //     adult = 1
+        // }
+        // if (!from || !to) return res.json({ code: 0, name: "", message: "not found date" })
+        // let dates = [from, to]
+
+        // let query = {
+        //     where: {
+
+        //     },
+        // }
+
+
+        // if (address) query.where.hotel_address = { [Op.like]: `%${address}%` }
+
+        // if (star) {
+        //     let jsonStar = JSON.parse(star)
+
+        //     query.where.hotel_star = { [Op.in]: jsonStar }
+        // }
+
+        // if (min && max) query.where['$rooms.room_price$'] = { [Op.between]: [+min, +max] }
+        // query.include = [
+        //     {
+        //         association: "rooms",
+        //         include: [
+        //             {
+        //                 association: "invoices",
+        //                 where: {
+        //                     r_date: { [Op.between]: dates },
+        //                     p_date: { [Op.between]: dates }
+        //                 },
+        //                 required: false,
+        //                 left: true
+        //             }
+        //         ]
+
+        //     },
+
+        // ]
+        // // get data
+        // try {
+        //     let hotels = (await Hotel.findAll(query))
+        //     hotels = hotels.map(el => {
+        //         let hotelValue = el.get({ plain: true })
+        //         let rooms = hotelValue.rooms
+        //         let roomFilter = []
+        //         for (let roomData of rooms) {
+        //             if (roomData.invoices.length === 0) {
+        //                 let room_empty = roomData.room_quantity
+        //                 let room_num_people = roomData.room_num_people
+        //                 if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
+
+        //             }
+        //             else {
+        //                 let room_empty = roomData.room_quantity - getOrderedQuantity(roomData.invoices)
+        //                 let room_num_people = roomData.room_num_people
+        //                 if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
+
+        //             }
+        //         }
+        //         if (roomFilter.length !== 0) {
+        //             hotelValue.rooms = roomFilter
+        //             return hotelValue
+        //         }
+
+        //     })
+
+        //     hotels = hotels.filter(el => {
+        //         if (el != null) return el
+        //     })
+        //     return res.json({ msg: "success", data: hotels })
+        // } catch (error) {
+        //     console.log(error)
+        //     return res.status(400).send(error.message)
+        // }
+
+        const query = {
+            where: {}
         }
-        if (!from || !to) return res.json({ code: 0, name: "", message: "not found date" })
-        let dates = [from, to]
+        let { address } = req.query
 
-        let query = {
-            where: {
-                [Op.and]: []
-            },
+        // process address
+        if (address) {
+            let addressArr = address.split(',')
+            let addressQuery = addressArr.flatMap(value => [{ [Op.like]: `%${value}%` }])
+            query.where.hotel_address = { [Op.and]: addressQuery }
         }
-        // // add query
-        if (address) query.where[Op.and].push({ hotel_address: { [Op.like]: `%${address}%` } })
 
+
+        //  process staff
+        let { star } = req.query
         if (star) {
             let jsonStar = JSON.parse(star)
-            query.where[Op.and].push({ hotel_star: { [Op.in]: jsonStar } })
-        }
-        if (min && max) query.where[Op.and].push({ '$rooms.room_price$': { [Op.between]: [+min, +max] } })
 
-        query.include = [
-            {
-                association: "rooms",
-                include: [
-                    {
-                        association: "invoices",
-                        where: {
-                            [Op.and]: [{ r_date: { [Op.between]: dates } }, { p_date: { [Op.between]: dates } }]
-                        },
-                        required: false,
-                        left: true
-                    }
-                ]
-
-            },
-
-        ]
-        // get data
-        try {
-            let hotels = (await Hotel.findAll(query))
-            hotels = hotels.map(el => {
-                let hotelValue = el.get({ plain: true })
-                let rooms = hotelValue.rooms
-                let roomFilter = []
-                for (let roomData of rooms) {
-                    if (roomData.invoices.length === 0) {
-                        let room_empty = roomData.room_quantity
-                        let room_num_people = roomData.room_num_people
-                        if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
-
-                    }
-                    else {
-                        let room_empty = roomData.room_quantity - getOrderedQuantity(roomData.invoices)
-                        let room_num_people = roomData.room_num_people
-                        if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
-
-                    }
-                }
-                if (roomFilter.length !== 0) {
-                    hotelValue.rooms = roomFilter
-                    return hotelValue
-                }
-
-            })
-
-            hotels = hotels.filter(el => {
-                if (el != null) return el
-            })
-            return res.json({ msg: "success", data: hotels })
-        } catch (error) {
-            console.log(error)
-            return res.status(400).send(error.message)
+            query.where.hotel_star = { [Op.in]: jsonStar }
         }
 
+        let hotels = await Hotel.findAll(query)
+
+        // process min max price
+        let { min, max } = req.query
+
+        if (max && min) {
+
+            hotels = await asyncFilter(hotels, async (hotelValue) => {
+                let rooms = await hotelValue.countRooms({ where: { room_price: { [Op.between]: [+min, +max] } } })
+                return rooms > 0
+            })
+
+
+        }
+
+        // process dates filter
+        let { from, to } = req.query
+        let dateFilter = [from, to]
+
+        hotels = await asyncMap(hotels, async (hotelEl) => {
+            let rooms = await hotelEl.getRooms()
+
+            let newRooms = await asyncMap(rooms, async (el) => {
+                let invoices = await el.getInvoices({
+                    where: {
+                        [Op.or]: [
+                            { r_date: { [Op.between]: dateFilter } },
+                            { p_date: { [Op.between]: dateFilter } }
+                        ]
+                    }
+                })
+
+                console.log(dateFilter)
+                console.log(invoices)
+                let orderedQuantity = getOrderedQuantity(invoices)
+                let roomPlain = el.get({ plain: true })
+
+                roomPlain.ordered = orderedQuantity
+                return roomPlain
+            })
+
+            let newHotel = hotelEl.get({ plain: true })
+            newHotel.rooms = newRooms
+            return newHotel
+        })
+
+        return res.status(200).json({ data: hotels })
     }
 
     async sendOTP(req, res) {
@@ -337,12 +408,38 @@ class SiteController {
 
 function getOrderedQuantity(invoices) {
     let roomQuantity = 0
+    if (invoices.length === 0) return roomQuantity
+
     for (let invoice of invoices) {
         roomQuantity += invoice.room_quantity
     }
 
     return roomQuantity
 }
+
+async function asyncFilter(array, callBack) {
+    let data = []
+    for (let item of array) {
+        let check = await callBack(item)
+        if (check) {
+            data.push(item)
+        }
+    }
+
+    return data
+}
+
+async function asyncMap(array, callBack) {
+    let data = []
+    for (let item of array) {
+        let mapItem = await callBack(item)
+        data.push(mapItem)
+
+    }
+
+    return data
+}
+
 const siteController = new SiteController
 
 module.exports = siteController

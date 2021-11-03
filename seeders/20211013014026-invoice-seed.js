@@ -5,6 +5,7 @@ module.exports = {
     let data = []
     for (let i = 0; i < 20; i++) {
       let date = faker.datatype.datetime()
+      date.setHours(12, 00, 00)
       let nDate = new Date(date)
       nDate.setDate(date.getDate() + 1)
 
