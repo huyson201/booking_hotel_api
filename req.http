@@ -186,14 +186,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
 # @name createStaff
 POST {{localBaseURL}}/staffs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlYWY3ZDU0NC1kYmIyLTRmYmYtOGYxZC0wNDNjNGNhMjYxNmYiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfaW1nIjoiL2ltYWdlcy8wYTFiNzk1ZWFiNWE1YzAwMzhlMTQ1ODg4ZTJkYmYzYSIsInVzZXJfbmFtZSI6Im5ndXllbiBkb2FuIGh1eSBzb24gMTIzIiwidXNlcl9waG9uZSI6IjA5ODU0Nzg1NDc0IiwidXNlcl9yb2xlIjoxLCJpYXQiOjE2MzUxNzE3NzQsImV4cCI6MTYzNTE3ODk3NH0.cUUJ8h3Xw_vRfg4s4XQPhVfcysqYcnxLvlalQ1u7Vys
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTkyMTQxMSwiZXhwIjoxNjM1OTI4NjExfQ.XuMc04VD48MBygzY-EgMntBNjbdsV4VnYEV_oloTPB4
 
 {
     "user_name": "huy son",
-    "user_email": "huyson200@gmail.com",
+    "user_email": "huyson2010@gmail.com",
     "user_password": "123123",
     "user_role": 2,
-    "user_phone": "016548745",
+    "user_phone": "016541745",
     "staff_role": 2,
     "hotel_id": 1
     
@@ -243,10 +243,8 @@ GET {{localBaseURL}}/invoices/1
 
 # @name createInvoice
 POST {{localBaseURL}}/invoices
-### create a invoice
-POST https://my-booking-hotel.herokuapp.com/invoices
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJjOTEyNGZmYy1jZWZkLTRlNzUtOTE2ZC03MWUwOGZkN2ZhMDEiLCJ1c2VyX2VtYWlsIjoib2FuaEBnbWFpbC5jb20iLCJ1c2VyX2ltZyI6bnVsbCwidXNlcl9uYW1lIjoia2lldSBvYW5oIiwidXNlcl9waG9uZSI6IjA4NDU0NTMyOTEiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTM4Njc4MCwiZXhwIjoxNjM1MzkzOTgwfQ.xy-D0Dp_kokf8WKF2-ujZxB2dmJSw_wbToZyv2O2YkY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTkyMTQxMSwiZXhwIjoxNjM1OTI4NjExfQ.XuMc04VD48MBygzY-EgMntBNjbdsV4VnYEV_oloTPB4
 
 {
     "price" : "120000",
@@ -261,7 +259,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJjO
 ###
 
 # @name updateInvoice
-PATCH {{localBaseURL}}/invoices/:id
+PATCH {{localBaseURL}}/invoices/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlMzE0NDJhYi0wYWE2LTQxNjAtODU2Ni0xNzVmYmJmMTJhN2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAwQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MiwiaWF0IjoxNjM1MjEyMzAzLCJleHAiOjE2MzUyMTk1MDN9.Z5vCbenPAYKEByYcU1AaOCc7CtGMGHbnFVTiYw0ixyU
 

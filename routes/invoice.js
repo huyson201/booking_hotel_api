@@ -6,6 +6,6 @@ const authMiddleware = require('../middleware/auth')
 
 invoiceRoute.get("/", invoiceController.index)
 invoiceRoute.get('/:id(\\d+$)', invoiceController.getById)
-invoiceRoute.post('/', invoiceController.create)
+invoiceRoute.post('/', authMiddleware.checkToken, invoiceController.create)
 invoiceRoute.patch('/:id', invoiceController.update)
 module.exports = invoiceRoute
