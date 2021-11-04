@@ -1,10 +1,21 @@
 const express = require("express")
 const userRoute = express.Router()
 const userController = require("../controllers/user")
-const multer = require('multer')
 const authMiddleware = require('../middleware/auth')
 const userMiddleware = require('../middleware/user')
-const upload = multer({ dest: 'uploads/' })
+const multer = require('multer')
+
+const storage = multer.diskStorage({});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith('image')) {
+        cb(null, true);
+    } else {
+        cb('invalid image file!', false);
+    }
+};
+
+const upload = multer({ storage, fileFilter });
 
 
 userRoute.get("/", userMiddleware.authGetAll, userController.index)
