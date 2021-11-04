@@ -56,8 +56,9 @@ class UserController {
         let data = req.body
 
         try {
+            console.log(uuid)
             let user = await User.findByPk(uuid)
-
+            console.log(user)
             if (!user) return res.status(404).json({ code: 404, name: "Not found", message: "user not found!" })
 
             let imgUrl = ''
