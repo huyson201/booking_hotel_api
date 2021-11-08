@@ -62,8 +62,12 @@ class InvoiceController {
     async delete(req, res) {
         let id = req.params.id
         try {
-            await Invoice.destroy(id)
-            return res.status(204).send()
+            let invoice = await Invoice.findByPk(id)
+            if (!invoice) return res.status(400).send('invoice not found')
+
+            await invoice.destroy()
+
+            return res.status(200).json({ code: 204, name: "REMOVE_INVOICE", message: 'successfully' })
         } catch (error) {
             console.log(error)
             return res.status(400).send(error.message)

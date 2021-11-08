@@ -115,15 +115,12 @@ class HotelController {
         let id = req.params.id
         const { status } = req.query
         if (!id) return res.status(400).send("id not found")
-
         const query = {
             where: { hotel_id: id }
         }
-
         if (status) {
             query.where.status = status
         }
-
         try {
             let invoice = await Invoice.findAll(query)
             return res.status(200).json({ message: "success", data: invoice })
