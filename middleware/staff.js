@@ -13,7 +13,7 @@ class StaffMiddleware {
     }
 
     async authUpdateStaff(req, res, next) {
-        if (!(await canUpdateStaff(req.user, res.params.id))) {
+        if (!(await canUpdateStaff(req.user, req.params.id))) {
             return res.status(403).send("Don't have permission!")
         }
 

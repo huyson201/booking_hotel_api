@@ -1,10 +1,10 @@
 @localBaseURL = http://localhost:3000
-@hostBaseURL =  https://my-booking-hotel.herokuapp.com/
+@hostBaseURL =  https://my-booking-hotel.herokuapp.com
 
 # @name registerUser
 # @note
 # Email and phone number require unique
-POST {{localBaseURL}}/register
+POST {{hostBaseURL}}/register
 Content-Type: application/json
 
 {
@@ -27,12 +27,12 @@ Content-Type: application/json
 }
 
 ### Login
-POST {{localBaseURL}}/login
+POST {{hostBaseURL}}/login
 Content-Type: application/json
 
 {
-    "user_email": "huyson2010@gmail.com",
-    "user_password": "123123"
+    "user_email": "huyson203@gmail.com",
+    "user_password": "asdasd"
 }
 
 
@@ -253,14 +253,14 @@ GET {{localBaseURL}}/invoices/1
 ### 
 
 # @name createInvoice
-POST {{localBaseURL}}/invoices
+POST {{hostBaseURL}}/invoices
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTkyMTQxMSwiZXhwIjoxNjM1OTI4NjExfQ.XuMc04VD48MBygzY-EgMntBNjbdsV4VnYEV_oloTPB4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI5ODVkMWYzOC1kOGUzLTQ0MTUtYmEwNy01YjU0MzRjMWM3MzMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNjA4NDg1MiwiZXhwIjoxNjM2MDkyMDUyfQ.-aD8-dFp3GbmAI8VpslG2In9w6hvzwp6jgKm-n7f7ok
 
 {
     "price" : "120000",
     "hotel_id": 1,
-    "r_date": "gfsdfgs",
+    "r_date": "2021-10-20T12:00:00",
     "p_date": "2021-10-21T12:00:00",
     "room_id": 12,
     "room_quantity": 1,
