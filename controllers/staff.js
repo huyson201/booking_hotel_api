@@ -42,7 +42,7 @@ class StaffController {
     }
 
     async delete(req, res) {
-        let { staff_id } = req.params.id
+        let staff_id = req.params.id
 
         try {
             let staff = await HotelStaff.findOne({ where: { staff_id } })

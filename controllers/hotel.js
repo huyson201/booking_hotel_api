@@ -133,6 +133,12 @@ class HotelController {
             return res.status(400).send(err.message)
         }
     }
+
+    async update(req, res) {
+        return res.status(200).json({
+            message: "updated"
+        })
+    }
 }
 
 const hotelController = new HotelController
