@@ -96,7 +96,7 @@ class HotelController {
             include: [
                 {
                     association: 'staff_info',
-                    attributes: ['user_uuid', 'user_name', 'user_email', 'user_phone']
+                    attributes: ['user_uuid', 'user_name', 'user_email', 'user_phone','user_img']
                 }
             ]
         }

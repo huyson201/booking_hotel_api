@@ -197,15 +197,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
 # @name createStaff
 POST {{localBaseURL}}/staffs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTkyMTQxMSwiZXhwIjoxNjM1OTI4NjExfQ.XuMc04VD48MBygzY-EgMntBNjbdsV4VnYEV_oloTPB4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI4NDYxZTk1OS0yYTMzLTQyNGItYTQwYy0yOGU4YTFiYjU4MDMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNjQyODY0MCwiZXhwIjoxNjM2NDM1ODQwfQ.w0NzyyjwJSUVGsLu7ZHn2Njf_76lOBPto-j89e5dumo
 
 {
-    "user_name": "huy son",
-    "user_email": "huyson2010@gmail.com",
+    "user_name": "staff20",
+    "user_email": "staff20@gmail.com",
     "user_password": "123123",
     "user_role": 2,
-    "user_phone": "016541745",
-    "staff_role": 2,
+    "user_phone": "016541743",
+    "staff_role": 0,
     "hotel_id": 1
     
 }
