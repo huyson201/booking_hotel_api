@@ -1,4 +1,3 @@
-const { HotelStaff } = require('../models')
 
 const authRole = (permissions = []) => {
     return (req, res, next) => {
