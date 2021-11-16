@@ -9,10 +9,10 @@ Content-Type: application/json
 
 {
     "user_name": "huy son",
-    "user_email": "huyson203@gmail.com",
+    "user_email": "huyson205@gmail.com",
     "user_password": "asdasd",
     "confirm_password": "asdasd",
-    "user_phone": "0984182213"
+    "user_phone": "0981182213"
 }
 
 ###
@@ -27,11 +27,11 @@ Content-Type: application/json
 }
 
 ### Login
-POST {{hostBaseURL}}/login
+POST {{localBaseURL}}/login
 Content-Type: application/json
 
 {
-    "user_email": "huyson203@gmail.com",
+    "user_email": "huyson205@gmail.com",
     "user_password": "asdasd"
 }
 
@@ -55,7 +55,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY
 
 # @name getAllHotels
 GET {{localBaseURL}}/hotels
-Authorization: Bearer
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI5ODVkMWYzOC1kOGUzLTQ0MTUtYmEwNy01YjU0MzRjMWM3MzMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNjUyNDcxMywiZXhwIjoxNjM2NTMxOTEzfQ.fwQELK1r-DEp0nAZd8T8D-aqgJor4InwSz66unlhx9I
 
 ### 
 
@@ -204,8 +204,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlO
     "user_email": "huyson2010@gmail.com",
     "user_password": "123123",
     "user_role": 2,
-    "user_phone": "016541743",
-    "staff_role": 0,
+    "user_phone": "016541745",
+    "staff_role": 2,
     "hotel_id": 1
     
 }
@@ -234,7 +234,6 @@ Authorization: Bearer
 
 # @note
 # status query ?status=
-GET {{localBaseURL}}/hotels/3/invoices?status=Chua xac nhan
 GET {{localBaseURL}}/hotels/1/invoices?status=Dang dat coc
 
 ###
@@ -243,7 +242,7 @@ GET {{localBaseURL}}/hotels/1/invoices?status=Dang dat coc
 
 # @note
 # status query ?status=
-GET {{localBaseURL}}/invoices?status="Chưa xác nhận"
+GET {{localBaseURL}}/invoices
 
 
 ###
@@ -256,16 +255,16 @@ GET {{localBaseURL}}/invoices/1
 # @name createInvoice
 POST {{hostBaseURL}}/invoices
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI3MjYyODk1YS0xMzkxLTRkZTYtYWRiMi1hNTgwNzA4NTlmMTQiLCJ1c2VyX3JvbGUiOjIsImlhdCI6MTYzNjM2MDUzNiwiZXhwIjoxNjM2MzY3NzM2fQ.iQ0Wq8cO1Nf22UwT4NXO1nNekL4p1nUeQmIBBnTvk-E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI5ODVkMWYzOC1kOGUzLTQ0MTUtYmEwNy01YjU0MzRjMWM3MzMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNjA4NDg1MiwiZXhwIjoxNjM2MDkyMDUyfQ.-aD8-dFp3GbmAI8VpslG2In9w6hvzwp6jgKm-n7f7ok
 
 {
     "price" : "120000",
-    "hotel_id": 3,
-    "r_date": "2021-10-21T12:00:00",
+    "hotel_id": 1,
+    "r_date": "2021-10-20T12:00:00",
     "p_date": "2021-10-21T12:00:00",
-    "room_id": 11,
+    "room_id": 12,
     "room_quantity": 1,
-    "status": 0
+    "status": "Dang dat coc"
 }
 
 ###
@@ -284,8 +283,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlM
 
 # @name deleteInvoice
 
-DELETE {{localBaseURL}}/invoices/22
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI3MjYyODk1YS0xMzkxLTRkZTYtYWRiMi1hNTgwNzA4NTlmMTQiLCJ1c2VyX3JvbGUiOjIsImlhdCI6MTYzNjM1MjA2MiwiZXhwIjoxNjM2MzU5MjYyfQ.PoRWD25GpRUvmeKKhdxERR5NSbg4op82ApHJNBGgfV8
+DELETE {{localBaseURL}}/invoices/id
+Authorization: Bearer
 ### send otp
 
 POST {{localBaseURL}}/send-otp
@@ -315,3 +314,95 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlO
     "new_password" : "huyson123",
     "confirm_password": "huyson123"
 }
+
+###
+
+# @name createService
+
+POST {{localBaseURL}}/services
+Content-Type: application/json
+
+{
+    "service_name": "free water",
+    "service_icon": "water"
+}
+
+###
+
+# @name getAllService
+GET {{localBaseURL}}/services
+
+###
+
+# @name getServiceById
+GET {{localBaseURL}}/services/2
+Content-Type: application/json
+
+
+###
+
+# @name deleteServiceById
+DELETE {{localBaseURL}}/services/4
+Content-Type: application/json
+
+
+###
+
+# @name updateServiceById
+PATCH  {{localBaseURL}}/services/4
+Content-Type: application/json
+
+{
+    "service_name": "free all 1",
+    "service_icon": "all 1"
+}
+
+
+###
+
+# @name getAllHotelServices
+GET {{localBaseURL}}/hotel-services
+Content-Type: application/json
+
+###
+
+# @name createHotelService
+POST  {{localBaseURL}}/hotel-services
+Content-Type: application/json
+
+{
+    "hotel_id": 1,
+    "service_id": 5
+}
+
+
+###
+
+# @name updateHotelService
+PATCH  {{localBaseURL}}/hotel-services/1
+Content-Type: application/json
+
+{
+    "hotel_id": 1,
+    "service_id": 1
+}
+
+###
+
+# @name deleteHotelService
+DELETE {{localBaseURL}}/hotel-services/1
+Content-Type: application/json
+
+
+###
+
+# @name getHotelServiceById
+GET {{localBaseURL}}/hotel-services/2
+Content-Type: application/json
+
+
+###
+
+# @name getServicesOfHotel
+GET {{localBaseURL}}/hotels/1/services
+Content-Type: application/json

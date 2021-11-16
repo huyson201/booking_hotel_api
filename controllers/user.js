@@ -59,9 +59,6 @@ class UserController {
             let user = await User.findByPk(uuid)
 
             if (!user) return res.status(404).json({ code: 404, name: "Not found", message: "user not found!" })
-            console.log(file)
-            console.log('files', req.files)
-            console.log('data: ', data)
             let imgUrl = ''
             if (file) {
                 let result = await uploadFile(file)

@@ -1,4 +1,4 @@
-const { Hotel, HotelStaff, Room, Invoice } = require("../models")
+const { Hotel, HotelStaff, Room, Invoice, HotelService } = require("../models")
 const { uploadFile } = require('../s3')
 require('dotenv').config()
 class HotelController {
@@ -96,7 +96,7 @@ class HotelController {
             include: [
                 {
                     association: 'staff_info',
-                    attributes: ['user_uuid', 'user_name', 'user_email', 'user_phone','user_img']
+                    attributes: ['user_uuid', 'user_name', 'user_email', 'user_phone', 'user_img']
                 }
             ]
         }
@@ -135,6 +135,32 @@ class HotelController {
         return res.status(200).json({
             message: "updated"
         })
+    }
+
+    async getServices(req, res) {
+        const id = req.params.id
+        if (!id) return res.status(400).send('hotel id not found!!')
+
+        try {
+            let services = await HotelService.findAll({
+                where: { hotel_id: id },
+                raw: true,
+                attributes: [],
+                include: [
+                    {
+                        association: 'service'
+                    }
+                ]
+            })
+
+            return res.status(200).json({
+                data: services,
+                message: 'success'
+            })
+        } catch (error) {
+            console.log(err)
+            return res.status(400).send(err.message)
+        }
     }
 }
 

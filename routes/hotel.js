@@ -27,4 +27,5 @@ hotelRoute.post("/", authMiddleware.checkToken, upload.fields(uploadField), user
 
 hotelRoute.patch("/:id", hotelController.update)
 
+hotelRoute.get('/:id/services', hotelController.getServices)
 module.exports = hotelRoute
