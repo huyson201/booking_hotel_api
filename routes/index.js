@@ -7,7 +7,7 @@ const staffRoute = require("./staff")
 const serviceRoute = require('./service')
 const hotelServiceRoute = require('./hotelservice')
 const authMiddleware = require('../middleware/auth')
-
+const rateRoute = require('./rate')
 const route = (app) => {
     app.use('/', siteRoute)
     app.use('/hotels', hotelRoute)
@@ -17,6 +17,7 @@ const route = (app) => {
     app.use('/staffs', staffRoute)
     app.use('/services', serviceRoute)
     app.use('/hotel-services', hotelServiceRoute)
+    app.use('/rates', rateRoute)
 }
 
 module.exports = route

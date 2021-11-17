@@ -406,3 +406,47 @@ Content-Type: application/json
 # @name getServicesOfHotel
 GET {{localBaseURL}}/hotels/1/services
 Content-Type: application/json
+
+###
+
+# @name getAllRate
+
+GET {{localBaseURL}}/rates
+
+### 
+
+# @name createRate
+
+POST {{localBaseURL}}/rates
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjAsImlhdCI6MTYzNzEzMTIxNCwiZXhwIjoxNjM3MTM4NDE0fQ.aENrP5t81VkXiBDf2G-rIGYlzLNZ9QK6TveoIgxaWmI
+
+{
+    "hotel_id" :1,
+    "rate_star": 4,
+    "rate_comment": "test rating function"
+}
+
+
+### 
+
+# @name updateRate
+
+PATCH  {{localBaseURL}}/rates/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjAsImlhdCI6MTYzNzEzMTIxNCwiZXhwIjoxNjM3MTM4NDE0fQ.aENrP5t81VkXiBDf2G-rIGYlzLNZ9QK6TveoIgxaWmI
+
+{
+    "rate_star": 3,
+    "rate_comment": "test update rating 1324 function"
+}
+
+
+### 
+
+# @name removeRate
+
+DELETE {{localBaseURL}}/rates/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjAsImlhdCI6MTYzNzEzMTIxNCwiZXhwIjoxNjM3MTM4NDE0fQ.aENrP5t81VkXiBDf2G-rIGYlzLNZ9QK6TveoIgxaWmI
+
