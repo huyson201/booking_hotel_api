@@ -142,87 +142,6 @@ class SiteController {
     }
 
     async filter(req, res) {
-
-        // let { address, star, max, min, room, adult, from, to } = req.query
-
-        // if (!room && !adult) {
-        //     room = 1
-        //     adult = 1
-        // }
-        // if (!from || !to) return res.json({ code: 0, name: "", message: "not found date" })
-        // let dates = [from, to]
-
-        // let query = {
-        //     where: {
-
-        //     },
-        // }
-
-
-        // if (address) query.where.hotel_address = { [Op.like]: `%${address}%` }
-
-        // if (star) {
-        //     let jsonStar = JSON.parse(star)
-
-        //     query.where.hotel_star = { [Op.in]: jsonStar }
-        // }
-
-        // if (min && max) query.where['$rooms.room_price$'] = { [Op.between]: [+min, +max] }
-        // query.include = [
-        //     {
-        //         association: "rooms",
-        //         include: [
-        //             {
-        //                 association: "invoices",
-        //                 where: {
-        //                     r_date: { [Op.between]: dates },
-        //                     p_date: { [Op.between]: dates }
-        //                 },
-        //                 required: false,
-        //                 left: true
-        //             }
-        //         ]
-
-        //     },
-
-        // ]
-        // // get data
-        // try {
-        //     let hotels = (await Hotel.findAll(query))
-        //     hotels = hotels.map(el => {
-        //         let hotelValue = el.get({ plain: true })
-        //         let rooms = hotelValue.rooms
-        //         let roomFilter = []
-        //         for (let roomData of rooms) {
-        //             if (roomData.invoices.length === 0) {
-        //                 let room_empty = roomData.room_quantity
-        //                 let room_num_people = roomData.room_num_people
-        //                 if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
-
-        //             }
-        //             else {
-        //                 let room_empty = roomData.room_quantity - getOrderedQuantity(roomData.invoices)
-        //                 let room_num_people = roomData.room_num_people
-        //                 if (room_empty >= room && (room_num_people * room) >= adult) roomFilter.push(roomData)
-
-        //             }
-        //         }
-        //         if (roomFilter.length !== 0) {
-        //             hotelValue.rooms = roomFilter
-        //             return hotelValue
-        //         }
-
-        //     })
-
-        //     hotels = hotels.filter(el => {
-        //         if (el != null) return el
-        //     })
-        //     return res.json({ msg: "success", data: hotels })
-        // } catch (error) {
-        //     console.log(error)
-        //     return res.status(400).send(error.message)
-        // }
-
         const query = {
             where: {}
         }
@@ -231,7 +150,7 @@ class SiteController {
         // process address
         if (address) {
             let addressArr = address.split(',')
-            let addressQuery = addressArr.flatMap(value => [{ [Op.like]: `%${value}%` }])
+            let addressQuery = addressArr.flatMap(value => [{ [Op.like]: `%${value.trim()}%` }])
             query.where.hotel_address = { [Op.and]: addressQuery }
         }
 
@@ -402,8 +321,6 @@ class SiteController {
             return res.status(400).send(error.message)
         }
     }
-
-
 }
 
 function getOrderedQuantity(invoices) {
