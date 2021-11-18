@@ -144,7 +144,7 @@ class HotelController {
         try {
             let services = await HotelService.findAll({
                 where: { hotel_id: id },
-                raw: true,
+                // raw: true,
                 attributes: [],
                 include: [
                     {
@@ -152,7 +152,7 @@ class HotelController {
                     }
                 ]
             })
-
+            console.log(services);
             return res.status(200).json({
                 data: services,
                 message: 'success'

@@ -8,10 +8,10 @@ POST {{localBaseURL}}/register
 Content-Type: application/json
 
 {
-    "user_name": "huy son",
-    "user_email": "huyson205@gmail.com",
-    "user_password": "asdasd",
-    "confirm_password": "asdasd",
+    "user_name": "oanh",
+    "user_email": "oanh@gmail.com",
+    "user_password": "123456",
+    "confirm_password": "123456",
     "user_phone": "0981182213"
 }
 
@@ -139,11 +139,11 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY2Q3NWNkMC1kNGZlLTQ2ZDktYjg5Ny1lNjY0NWE0NTZiM2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MCwiaWF0IjoxNjM0NzE0NDc4LCJleHAiOjE2MzQ3MjE2Nzh9.yd3Jsxp1vmishzhycVWNZQRFMAcOQORNzncHY5WbWcE
 
 {
-    "user_name": "huy son",
-    "user_email": "huyson4@gmail.com",
+    "user_name": "oanh",
+    "user_email": "oanh@gmail.com",
     "user_password": "123123",
     "user_phone": "016548745",
-    "user_role": 0
+    "user_role": 2
 }
 
 
@@ -323,8 +323,8 @@ POST {{localBaseURL}}/services
 Content-Type: application/json
 
 {
-    "service_name": "free water",
-    "service_icon": "water"
+    "service_name": "Nhà Hàng",
+    "service_icon": "silverware-fork-knife"
 }
 
 ###
@@ -367,12 +367,12 @@ Content-Type: application/json
 ###
 
 # @name createHotelService
-POST  {{localBaseURL}}/hotel-services
+POST {{localBaseURL}}/hotel-services
 Content-Type: application/json
 
 {
-    "hotel_id": 1,
-    "service_id": 5
+    "hotel_id": 3,
+    "service_id": 2
 }
 
 
