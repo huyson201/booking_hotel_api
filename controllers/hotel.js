@@ -89,9 +89,10 @@ class HotelController {
     async getStaffs(req, res) {
         let id = req.params.id
         if (!id) return res.status(400).dend('id not found')
-
+        let { limit, offset, sort } = req.query
+        let query = {}
         // init query
-        const query = {
+        query = {
             where: { hotel_id: id },
             include: [
                 {
@@ -100,7 +101,15 @@ class HotelController {
                 }
             ]
         }
+        if (limit) query.limit = +limit
 
+        if (offset) query.offset = +offset
+
+        if (sort) {
+            let col = sort.split(':')[0]
+            let value = sort.split(':')[1]
+            query.order = [[col, value]]
+        }
         try {
             let staffs = await HotelStaff.findAll(query)
             return res.status(200).json({ msg: "success", data: staffs })

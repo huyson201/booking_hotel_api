@@ -5,8 +5,21 @@ require('dotenv').config()
 class UserController {
 
     async index(req, res) {
+        let { limit, offset, sort } = req.query
+
+        let query = {}
+
+        if (limit) query.limit = +limit
+
+        if (offset) query.offset = +offset
+
+        if (sort) {
+            let col = sort.split(':')[0]
+            let value = sort.split(':')[1]
+            query.order = [[col, value]]
+        }
         try {
-            let users = await User.findAll()
+            let users = await User.findAll(query)
             return res.json({ message: "success", data: users })
         }
         catch (err) {
@@ -120,6 +133,8 @@ class UserController {
             return res.status(400).send(err.message)
         }
     }
+
+    
 }
 
 const userController = new UserController

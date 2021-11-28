@@ -2,8 +2,11 @@ const { HotelStaff, User, sequelize } = require('../models')
 const role = require('../config/role')
 class StaffController {
     async index(req, res) {
+        let { user_uuid } = req.query
+        const query = { where: {} }
+        if (user_uuid) query.where.user_uuid = user_uuid
         try {
-            let staffs = await HotelStaff.findAll()
+            let staffs = await HotelStaff.findAll(query)
             return res.json({
                 code: 0,
                 name: "",
