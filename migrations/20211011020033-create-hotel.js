@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       hotel_desc: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       hotel_img: {
         type: Sequelize.TEXT
