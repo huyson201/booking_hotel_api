@@ -6,6 +6,12 @@ const canGetUsers = (user) => {
     )
 }
 
+const canAddHotels = (user) => {
+    return (
+        user.user_role === role.OWNER
+    )
+}
+
 const canGetUserDetail = (user, userId) => {
     return (
         user.user_role === role.ADMIN ||
@@ -54,5 +60,6 @@ module.exports = {
     canGetUsers,
     canCreateUser,
     canGetInvoices,
-    canGetHotelsOfUser
+    canGetHotelsOfUser,
+    canAddHotels
 }

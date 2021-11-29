@@ -74,9 +74,8 @@ class HotelController {
         // services = [...new Set(services)]
         const res = await HotelService.destroy({ where: { hotel_id } });
         console.log(res, "result destroy hotel service");
-        let servicesTemp = [];
         // create hotel's service
-        servicesTemp.forEach(async (element) => {
+        services.forEach(async (element) => {
           const sv = await HotelService.create({
             hotel_id: hotel_id,
             service_id: element,
@@ -100,26 +99,6 @@ class HotelController {
     }
   }
 
-  async create(req, res) {
-    let user_uuid = req.user.user_uuid;
-    let { hotel_name, hotel_star, services } = req.body;
-    // console.log(req.body);
-    // console.log(req.files, "files================");
-    if (!user_uuid || !hotel_name || !hotel_star || !services)
-      return res.json({ code: 0, name: "", message: "hotel's data invalid" });
-    if (!req.files.avatar)
-      return res.json({
-        code: 404,
-        name: "Not found",
-        message: "Hotel's avatar required!",
-      });
-    if (!req.files.photos)
-      return res.json({
-        code: 404,
-        name: "Not found",
-        message: "Hotel's slide required!",
-      });
-  }
   async getById(req, res) {
     let id = req.params.id;
     if (!id) return res.status(404).json({ msg: "id not found" });
@@ -150,8 +129,8 @@ class HotelController {
 
   async create(req, res) {
     let user_uuid = req.user.user_uuid;
-    let { hotel_name, hotel_star } = req.body;
-    if (!user_uuid || !hotel_name || !hotel_star)
+    let { hotel_name, hotel_star, services } = req.body;
+    if (!user_uuid || !hotel_name || !hotel_star || !services)
       return res.json({ code: 0, name: "", message: "hotel's data invalid" });
     if (!req.files.avatar)
       return res.json({
@@ -197,6 +176,19 @@ class HotelController {
         hotel_img,
         hotel_slide: slideImgs.join(),
       });
+
+      if (services) {
+        services = services.split(",");
+        // create hotel's service
+        services.forEach(async (element) => {
+          const sv = await HotelService.create({
+            hotel_id: hotel.hotel_id,
+            service_id: element,
+          });
+          console.log(sv, "create service success");
+        });
+      }
+
       return res.status(201).json({
         code: 201,
         name: "Created",
@@ -267,12 +259,6 @@ class HotelController {
     }
   }
 
-  async update(req, res) {
-    return res.status(200).json({
-      message: "updated",
-    });
-  }
-
   async getServices(req, res) {
     const id = req.params.id;
     if (!id) return res.status(400).send("hotel id not found!!");
@@ -296,6 +282,26 @@ class HotelController {
     } catch (error) {
       console.log(err);
       return res.status(400).send(err.message);
+    }
+  }
+
+  async delete(req, res) {
+    let hotel_id = req.params.id;
+    if (!hotel_id) return res.status(400).send("hotel_id not found");
+
+    try {
+      let hotel = await Hotel.findByPk(hotel_id);
+      if (!hotel) return res.status(400).send("room not found");
+
+      await HotelService.destroy({ where: { hotel_id } });
+      await hotel.destroy();
+
+      return res
+        .status(204)
+        .json({ code: 204, name: "REMOVE_ROOM", message: "successfully" });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).send(error.message);
     }
   }
 }
