@@ -67,8 +67,8 @@ Authorization: Bearer
 ### 
 
 # @name getRoomOfHotel
-GET {{localBaseURL}}/hotels/1/rooms
-Authorization: Bearer
+GET {{localBaseURL}}/hotels/1/rooms?sort=updatedAt:desc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI4NDYxZTk1OS0yYTMzLTQyNGItYTQwYy0yOGU4YTFiYjU4MDMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzODIzNDc2NywiZXhwIjoxNjM4MjQxOTY3fQ.I-Lqu82qprou3kv22JxY0TBmSE3BbdwxT-wtns3WAq4
 
 ###
 

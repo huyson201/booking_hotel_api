@@ -24,7 +24,7 @@ roomRoute.delete(
 roomRoute.patch(
   "/:id(\\d+$)",
   authMiddleware.checkToken,
-  upload.array("slideImgs"),
+  upload.array("room_imgs"),
   checkUpdateRoomPermission,
   roomController.update
 );

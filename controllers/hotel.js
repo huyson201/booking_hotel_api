@@ -27,10 +27,20 @@ class HotelController {
   async getRooms(req, res) {
     let id = req.params.id;
     if (!id) return res.status(400).send("id not found");
-    const query = {
+    let { limit, offset, sort } = req.query;
+    let query = {};
+    query = {
       where: { hotel_id: id },
     };
+    if (limit) query.limit = +limit;
 
+    if (offset) query.offset = +offset;
+
+    if (sort) {
+      let col = sort.split(":")[0];
+      let value = sort.split(":")[1];
+      query.order = [[col, value]];
+    }
     try {
       let rooms = await Room.findAll(query);
       return res.json({ msg: "success", data: rooms });
@@ -108,22 +118,6 @@ class HotelController {
     } catch (err) {
       console.log(err);
       return res.send(err);
-    }
-  }
-
-  async getRooms(req, res) {
-    let id = req.params.id;
-    if (!id) return res.status(400).send("id not found");
-    const query = {
-      where: { hotel_id: id },
-    };
-
-    try {
-      let rooms = await Room.findAll(query);
-      return res.json({ msg: "success", data: rooms });
-    } catch (err) {
-      console.log(err);
-      return res.status(400).send(err.message);
     }
   }
 

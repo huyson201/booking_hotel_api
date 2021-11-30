@@ -4,7 +4,7 @@ const checkUpdateRoomPermission = async (req, res, next) => {
     if (!user) return res.status(401).send('unauthorized')
 
     try {
-        let { room_id } = req.params.id
+        let room_id = req.params.id
         if (!room_id) return res.status(400).send('room id not found')
 
         let room = await Room.findOne({ where: { room_id: +room_id } })
@@ -12,7 +12,6 @@ const checkUpdateRoomPermission = async (req, res, next) => {
         let hotel_id = room.hotel_id
 
         let hotel = await Hotel.findOne({ where: { hotel_id, user_uuid: user.user_uuid } })
-
         if (hotel) {
             req.room = room
             return next()

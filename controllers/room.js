@@ -44,6 +44,7 @@ class RoomController {
     } = req.body;
 
     try {
+      
       // upload img
       let roomImgsUrl = [];
       for (let img of slideImgs) {
@@ -97,7 +98,6 @@ class RoomController {
   async update(req, res) {
     let slideImgs = req.files;
     let data = req.body;
-
     try {
       let room = req.room;
       if (!room) return res.status(400).send("room not found");
@@ -107,7 +107,7 @@ class RoomController {
       if (slideImgs) {
         for (let img of slideImgs) {
           let result = await uploadFile(img);
-          roomImgsUrl.push(result.key);
+          roomImgsUrl.push(process.env.APP_BASE_URL + "/images/" + result.key);
         }
       }
 
