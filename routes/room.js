@@ -8,6 +8,7 @@ const upload = multer({ dest: "uploads/" });
 
 roomRoute.get("/", roomController.index);
 roomRoute.get("/:id(\\d+$)", roomController.getById);
+roomRoute.get("/ordered/:id", roomController.getOrdered);
 roomRoute.post(
   "/",
   authMiddleware.checkToken,

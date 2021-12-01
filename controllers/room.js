@@ -1,4 +1,4 @@
-const { Room } = require("../models");
+const { Room, Invoice } = require("../models");
 const { uploadFile } = require("../s3");
 class RoomController {
   async index(req, res) {
@@ -42,15 +42,16 @@ class RoomController {
       hotel_id,
       room_services,
     } = req.body;
-
+    let data = req.body;
     try {
-      
       // upload img
       let roomImgsUrl = [];
       for (let img of slideImgs) {
         let result = await uploadFile(img);
         roomImgsUrl.push(process.env.APP_BASE_URL + "/images/" + result.key);
       }
+      data.room_imgs = roomImgsUrl.join();
+      console.log(data, "111111111111111111111111111111");
 
       let room = await Room.create({
         room_name,
@@ -120,7 +121,41 @@ class RoomController {
       return res.status(400).send("Something error!");
     }
   }
+
+  async getOrdered(req, res) {
+    let room_id = req.params.id;
+    if (!room_id) return res.status(400).send("room id not found");
+    let { from, to } = req.body;
+    try {
+      let dateFilter = [from, to];
+      const invoices = await Invoice.findAll({
+        where: {
+          [Op.or]: [
+            { r_date: { [Op.between]: dateFilter } },
+            { p_date: { [Op.between]: dateFilter } },
+          ],
+          room_id: room_id,
+          status: 3,
+        },
+      });
+      let ordered = getOrderedQuantity(invoices);
+      console.log(ordered, "ORDERED");
+      return res.status(200).json({ ordered: ordered });
+    } catch (error) {
+      return res.status(400).send("Something error!");
+    }
+  }
 }
 
+function getOrderedQuantity(invoices) {
+  let roomQuantity = 0;
+  if (invoices.length === 0) return roomQuantity;
+
+  for (let invoice of invoices) {
+    roomQuantity += invoice.room_quantity;
+  }
+
+  return roomQuantity;
+}
 const roomController = new RoomController();
 module.exports = roomController;
