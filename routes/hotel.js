@@ -10,20 +10,9 @@ const upload = require("multer")({ dest: "uploads/" });
 
 const uploadField = [{ name: "photos" }, { name: "avatar", maxCount: 1 }];
 
-hotelRoute.get(
-  "/:id(\\d+)/staffs",
-  authMiddleware.checkToken,
-  authRole([role.ADMIN, role.OWNER]),
-  hotelController.getStaffs
-);
+hotelRoute.get("/:id(\\d+)/staffs", authMiddleware.checkToken, authRole([role.ADMIN, role.OWNER]), hotelController.getStaffs);
 
-hotelRoute.get(
-  "/",
-  authMiddleware.checkToken,
-  authRole([role.ADMIN]),
-  hotelMiddleware.authGetHotels,
-  hotelController.index
-);
+hotelRoute.get("/", hotelController.index);
 
 hotelRoute.get("/:id(\\d+$)", hotelController.getById);
 
