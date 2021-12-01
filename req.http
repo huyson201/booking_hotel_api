@@ -12,7 +12,7 @@ Content-Type: application/json
     "user_email": "oanh@gmail.com",
     "user_password": "123456",
     "confirm_password": "123456",
-    "user_phone": "0981182213"
+    "user_phone": "0981182713"
 }
 
 ###
@@ -22,8 +22,8 @@ POST {{localBaseURL}}/login
 Content-Type: application/json
 
 {
-    "user_email": "huyson201@gmail.com",
-    "user_password": "huyson123"
+    "user_email": "oanh@gmail.com",
+    "user_password": "123456"
 }
 
 ### Login
@@ -43,13 +43,13 @@ POST {{localBaseURL}}/refresh-token
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJkN2VjNDZhZi04ZTk0LTQ3OWEtOWNmMC0yOGY2NzIwYTBlM2UiLCJ1c2VyX2VtYWlsIjoiaHV5c29uMjAyQGdtYWlsLmNvbSIsInVzZXJfbmFtZSI6Imh1eSBzb24iLCJ1c2VyX3Bob25lIjoiMDE2NTQ4NzQ1IiwidXNlcl9yb2xlIjoxLCJjcmVhdGVkQXQiOiIyMDIxLTEwLTE4VDEyOjQ5OjMyLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIxLTEwLTE4VDEzOjE0OjIxLjAwMFoiLCJpYXQiOjE2MzQ2MDI4NjAsImV4cCI6MTYzNTIwNzY2MH0.pOs94TVR2_voGy9mM0SohzjHbwdffZvGsf1Ip2wa-XI"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI2YWFiZDc4NS00YWRlLTRiMjgtODhjZC1kNThjM2FlODYxOTkiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzODM0MzM0OSwiZXhwIjoxNjM4OTQ4MTQ5fQ.qsktSTunXzskTeR0qqIE-ZNy8ZgQyT_MwGNpPlUIstQ"
 }
 
 ### Login
 POST {{localBaseURL}}/logout
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJmY2Q3NWNkMC1kNGZlLTQ2ZDktYjg5Ny1lNjY0NWE0NTZiM2EiLCJ1c2VyX2VtYWlsIjoiaHV5c29uQGdtYWlsLmNvbSIsInVzZXJfaW1nIjpudWxsLCJ1c2VyX25hbWUiOiJodXkgc29uIiwidXNlcl9waG9uZSI6IjAxNjU0ODc0NSIsInVzZXJfcm9sZSI6MCwiaWF0IjoxNjM1MTcwNDEyLCJleHAiOjE2MzUxNzc2MTJ9.ec6rEWuooaA3GXBcZNv3lYgPRDJYiPkWGOHgcchsw6A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI2YWFiZDc4NS00YWRlLTRiMjgtODhjZC1kNThjM2FlODYxOTkiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzODM0MzY1MiwiZXhwIjoxNjM4MzUwODUyfQ.7_umv9lNRZuTZPG7YNn6t8Qkohhi7W4pmSWu47niiSY
 
 ### 
 
