@@ -32,7 +32,10 @@ const getStreamFile = (fileKey) => {
         Bucket: awsName
     }
 
-    return s3.getObject(downloadParams).createReadStream()
+    return s3.getObject(downloadParams).createReadStream().on('error', function (err) {
+        console.log(err)
+        return err
+    });
 }
 
 module.exports = { uploadFile, getStreamFile }

@@ -155,7 +155,7 @@ class SiteController {
     if (!key) return res.status(400).send("not found");
 
     try {
-      let streamFile = getStreamFile(key);
+      let streamFile = await getStreamFile(key);
       return streamFile.pipe(res);
     } catch (error) {
       console.log(error);
