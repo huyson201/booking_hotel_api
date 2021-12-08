@@ -1,4 +1,4 @@
-const { Hotel, HotelStaff, Room, Invoice, HotelService } = require("../models");
+const { Hotel, HotelStaff, Room, Invoice, HotelService, Rate, sequelize } = require("../models");
 const { uploadFile } = require("../s3");
 require("dotenv").config();
 class HotelController {
@@ -296,6 +296,54 @@ class HotelController {
     } catch (error) {
       console.log(error);
       return res.status(400).send(error.message);
+    }
+  }
+
+  async getRates(req, res) {
+    const hotel_id = req.params.id
+    const { offset, limit, sort } = req.query
+
+    const query = {
+      // attributes: {
+      //   include: [[sequelize.fn('AVG', sequelize.col('rate_star')), 'rating']]
+      // },
+      where: {
+        hotel_id: hotel_id
+      },
+      include: [
+        {
+          association: 'user_info',
+          attributes: ['user_uuid', 'user_name', 'user_img']
+        }
+      ]
+    }
+
+    if (offset) {
+      query.offset = +offset
+    }
+    if (limit) {
+      query.limit = +limit
+    }
+
+    if (sort) {
+      let col = sort.split(":")[0];
+      let value = sort.split(":")[1];
+      query.order = [[col, value]];
+    }
+
+    try {
+      let rates = await Rate.findAndCountAll(query)
+      let rating = await Rate.findAll({
+        where: { hotel_id },
+        attributes: [[sequelize.fn('AVG', sequelize.col('rate_star')), 'rating']]
+      })
+      rating = rating[0].dataValues.rating
+      // if (!rating) {
+      //   rating = 5
+      // }
+      return res.status(200).json({ data: { ...rates, rating } })
+    } catch (error) {
+      return res.status(400).send(error.message)
     }
   }
 }

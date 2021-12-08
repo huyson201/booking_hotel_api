@@ -1,8 +1,10 @@
 const { Rate } = require('../models')
 
 exports.index = async (req, res) => {
+    const { user_uuid, hotel_id } = req.query
+    const query = { where: { user_uuid, hotel_id } }
     try {
-        let rates = await Rate.findAndCountAll()
+        let rates = await Rate.findAndCountAll(query)
         return res.status(200).json({
             message: 'success',
             data: rates,

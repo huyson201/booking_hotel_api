@@ -43,4 +43,5 @@ hotelRoute.delete(
 );
 
 hotelRoute.get("/:id/services", hotelController.getServices);
+hotelRoute.get('/:id/rates', hotelController.getRates)
 module.exports = hotelRoute;
