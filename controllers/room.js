@@ -41,6 +41,7 @@ class RoomController {
       room_quantity,
       hotel_id,
       room_services,
+      room_surcharge
     } = req.body;
     let data = req.body;
     try {
@@ -64,6 +65,7 @@ class RoomController {
         room_num_people: +room_num_people,
         room_imgs: roomImgsUrl.join(),
         room_services,
+        room_surcharge
       });
       return res.status(201).json({
         code: 201,
