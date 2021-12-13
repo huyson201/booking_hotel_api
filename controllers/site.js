@@ -80,7 +80,7 @@ class SiteController {
         user_email,
         user_password,
         user_phone,
-        user_role: 1,
+        user_role: 3,
       });
 
       return res.json({

@@ -4,12 +4,12 @@
 # @name registerUser
 # @note
 # Email and phone number require unique
-POST {{localBaseURL}}/register
+POST {{hostBaseURL}}/register
 Content-Type: application/json
 
 {
-    "user_name": "oanh",
-    "user_email": "oanh@gmail.com",
+    "user_name": "user",
+    "user_email": "user@gmail.com",
     "user_password": "123456",
     "confirm_password": "123456",
     "user_phone": "0981182713"
@@ -18,11 +18,11 @@ Content-Type: application/json
 ###
 
 # @name login
-POST {{localBaseURL}}/login
+POST {{hostBaseURL}}/login
 Content-Type: application/json
 
 {
-    "user_email": "oanh@gmail.com",
+    "user_email": "owner@gmail.com",
     "user_password": "123456"
 }
 
@@ -195,17 +195,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlY
 ### 
 
 # @name createStaff
-POST {{localBaseURL}}/staffs
+POST {{hostBaseURL}}/staffs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJlOTU3Njg2Zi1jMzhiLTQ3MzEtYjBjYS0wMTgyYWQ5NzBiZGMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzNTkyMTQxMSwiZXhwIjoxNjM1OTI4NjExfQ.XuMc04VD48MBygzY-EgMntBNjbdsV4VnYEV_oloTPB4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiI0NjVhYTkwNi1jM2ZjLTRmNmYtODBlYi1jYjJhZTQyZGUyOTMiLCJ1c2VyX3JvbGUiOjEsImlhdCI6MTYzOTQwNDY3NCwiZXhwIjoxNjM5NDExODc0fQ.HoyJXbiRWb6Fpf-db-a2bpFBbdiEav-4O9vXB9dEgRg
 
 {
-    "user_name": "huy son",
-    "user_email": "huyson2010@gmail.com",
+    "user_name": "staff1",
+    "user_email": "staff1@gmail.com",
     "user_password": "123123",
     "user_role": 2,
-    "user_phone": "016541745",
-    "staff_role": 2,
+    "user_phone": "061425876",
+    "staff_role": 1,
     "hotel_id": 1
     
 }
@@ -367,11 +367,11 @@ Content-Type: application/json
 ###
 
 # @name createHotelService
-POST {{localBaseURL}}/hotel-services
+POST {{hostBaseURL}}/hotel-services
 Content-Type: application/json
 
 {
-    "hotel_id": 35,
+    "hotel_id": 4,
     "service_id": 1
 }
 
