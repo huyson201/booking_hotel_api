@@ -187,10 +187,8 @@ class SiteController {
 
     //  process staff
     let { star } = req.query;
-    console.log(star.length, "000000000000");
     if (star) {
       let jsonStar = star.split(",")
-      console.log(jsonStar, "111111111111111");
       query.where.hotel_star = { [Op.in]: jsonStar };
     }
 
