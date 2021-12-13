@@ -20,11 +20,12 @@ class SiteController {
     try {
       let user = await User.findOne({ where: { user_email } });
 
-      if (!user) return res.json({ msg: "Email của bạn không tồn tại" ,code: 0});
+      if (!user)
+        return res.json({ msg: "Email của bạn không tồn tại", code: 0 });
 
       let checkPw = bcrypt.compareSync(user_password, user.user_password);
 
-      if (!checkPw) return res.json({ msg: "Sai mật khẩu",code:1 });
+      if (!checkPw) return res.json({ msg: "Sai mật khẩu", code: 1 });
 
       // generate token and refresh token
       let token = generateToken(user, process.env.ACCESS_TOKEN_SECRET, "2h");
@@ -63,15 +64,17 @@ class SiteController {
       let errors = [];
       let checkUser = await User.findOne({ where: { user_email: user_email } });
 
-      if (checkUser){
+      if (checkUser) {
         errors.push({ msg: "Email của bạn đã được đăng kí", code: 0 });
         checkUser = await User.findOne({ where: { user_phone: user_phone } });
         if (checkUser) {
-          errors.push({ msg: "Số điện thoại của bạn đã được đăng kí", code: 1 });
+          errors.push({
+            msg: "Số điện thoại của bạn đã được đăng kí",
+            code: 1,
+          });
         }
         return res.json({ errors: errors });
       }
-   
 
       if (user_password !== confirm_password)
         return res.status(400).send("Confirm password not math!");
@@ -184,9 +187,10 @@ class SiteController {
 
     //  process staff
     let { star } = req.query;
+    console.log(star.length, "000000000000");
     if (star) {
-      let jsonStar = JSON.parse(star);
-
+      let jsonStar = star.split(",")
+      console.log(jsonStar, "111111111111111");
       query.where.hotel_star = { [Op.in]: jsonStar };
     }
 
