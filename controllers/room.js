@@ -1,5 +1,6 @@
 const { Room, Invoice } = require("../models");
 const { uploadFile } = require("../s3");
+const { Op } = require("sequelize");
 class RoomController {
   async index(req, res) {
     try {
@@ -41,7 +42,7 @@ class RoomController {
       room_quantity,
       hotel_id,
       room_services,
-      room_surcharge
+      room_surcharge,
     } = req.body;
     let data = req.body;
     try {
@@ -65,7 +66,7 @@ class RoomController {
         room_num_people: +room_num_people,
         room_imgs: roomImgsUrl.join(),
         room_services,
-        room_surcharge
+        room_surcharge,
       });
       return res.status(201).json({
         code: 201,
@@ -127,7 +128,7 @@ class RoomController {
   async getOrdered(req, res) {
     let room_id = req.params.id;
     if (!room_id) return res.status(400).send("room id not found");
-    let { from, to } = req.body;
+    let { from, to } = req.query;
     try {
       let dateFilter = [from, to];
       const invoices = await Invoice.findAll({
