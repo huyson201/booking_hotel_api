@@ -20,11 +20,11 @@ class SiteController {
     try {
       let user = await User.findOne({ where: { user_email } });
 
-      if (!user) return res.json({ msg: "email not exist" });
+      if (!user) return res.json({ msg: "Email của bạn không tồn tại" ,code: 0});
 
       let checkPw = bcrypt.compareSync(user_password, user.user_password);
 
-      if (!checkPw) return res.json({ msg: "password not invalid" });
+      if (!checkPw) return res.json({ msg: "Sai mật khẩu",code:1 });
 
       // generate token and refresh token
       let token = generateToken(user, process.env.ACCESS_TOKEN_SECRET, "2h");
@@ -60,14 +60,18 @@ class SiteController {
 
     try {
       // kiểm tra email, phone number tồn tại
+      let errors = [];
       let checkUser = await User.findOne({ where: { user_email: user_email } });
-      if (checkUser) return res.status(400).json({ msg: "email exist!" });
 
-      // kiểm tra phone number tồn tại
-
-      checkUser = await User.findOne({ where: { user_phone: user_phone } });
-      if (checkUser)
-        return res.status(400).json({ msg: "phone number exist!" });
+      if (checkUser){
+        errors.push({ msg: "Email của bạn đã được đăng kí", code: 0 });
+        checkUser = await User.findOne({ where: { user_phone: user_phone } });
+        if (checkUser) {
+          errors.push({ msg: "Số điện thoại của bạn đã được đăng kí", code: 1 });
+        }
+        return res.json({ errors: errors });
+      }
+   
 
       if (user_password !== confirm_password)
         return res.status(400).send("Confirm password not math!");
