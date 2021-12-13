@@ -1,4 +1,12 @@
-const { Hotel, HotelStaff, Room, Invoice, HotelService, Rate, sequelize } = require("../models");
+const {
+  Hotel,
+  HotelStaff,
+  Room,
+  Invoice,
+  HotelService,
+  Rate,
+  sequelize,
+} = require("../models");
 const { uploadFile } = require("../s3");
 require("dotenv").config();
 class HotelController {
@@ -149,7 +157,7 @@ class HotelController {
       if (req.files.photos.length > 0) {
         for (let img of req.files.photos) {
           let result = await uploadFile(img);
-          slideImgs.push("/images/" + result.key);
+          slideImgs.push(process.env.APP_BASE_URL + "/images/" + result.key);
         }
       }
 
@@ -300,29 +308,29 @@ class HotelController {
   }
 
   async getRates(req, res) {
-    const hotel_id = req.params.id
-    const { offset, limit, sort } = req.query
+    const hotel_id = req.params.id;
+    const { offset, limit, sort } = req.query;
 
     const query = {
       // attributes: {
       //   include: [[sequelize.fn('AVG', sequelize.col('rate_star')), 'rating']]
       // },
       where: {
-        hotel_id: hotel_id
+        hotel_id: hotel_id,
       },
       include: [
         {
-          association: 'user_info',
-          attributes: ['user_uuid', 'user_name', 'user_img']
-        }
-      ]
-    }
+          association: "user_info",
+          attributes: ["user_uuid", "user_name", "user_img"],
+        },
+      ],
+    };
 
     if (offset) {
-      query.offset = +offset
+      query.offset = +offset;
     }
     if (limit) {
-      query.limit = +limit
+      query.limit = +limit;
     }
 
     if (sort) {
@@ -332,18 +340,20 @@ class HotelController {
     }
 
     try {
-      let rates = await Rate.findAndCountAll(query)
+      let rates = await Rate.findAndCountAll(query);
       let rating = await Rate.findAll({
         where: { hotel_id },
-        attributes: [[sequelize.fn('AVG', sequelize.col('rate_star')), 'rating']]
-      })
-      rating = rating[0].dataValues.rating
+        attributes: [
+          [sequelize.fn("AVG", sequelize.col("rate_star")), "rating"],
+        ],
+      });
+      rating = rating[0].dataValues.rating;
       // if (!rating) {
       //   rating = 5
       // }
-      return res.status(200).json({ data: { ...rates, rating } })
+      return res.status(200).json({ data: { ...rates, rating } });
     } catch (error) {
-      return res.status(400).send(error.message)
+      return res.status(400).send(error.message);
     }
   }
 }
